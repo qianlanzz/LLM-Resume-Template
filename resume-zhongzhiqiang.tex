@@ -1,0 +1,104 @@
+%%
+%% 钟志强简历
+%%
+
+\documentclass[zh]{resume}
+
+\setmainfont{Times New Roman}
+\setmonofont{Menlo}
+\setCJKmainfont{Songti SC}
+
+\fileinfo{%
+  \faCopyright{} 2026, Zhong Zhiqiang \hspace{0.5em}
+  \faEdit{} \today
+}
+
+\name{志强}{钟}
+
+\keywords{大模型, 检索增强, 数学推理, 生成式推荐, 知识蒸馏, LoRA, 强化学习}
+
+\profile{
+  \mobile{18279096382}
+  \email{zhongzhiqiang2002@njust.edu.cn}
+  \university{南京理工大学}
+  \degree{计算机技术 \textbullet 硕士在读}
+  \birthday{2002.08}
+}
+
+\begin{document}
+\makeheader
+
+\begin{abstract}
+南京理工大学计算机技术硕士在读，本科毕业于齐鲁工业大学（山东省科学院）。聚焦大语言模型检索、数学推理微调与生成式推荐方向，具备向量检索、重排序、知识蒸馏、LoRA 微调和强化学习优化实践经验；在 KDD Cup 2024 学术论文问答检索挑战赛和 ``天翼云息壤杯'' AI 大赛中完成从数据构建、模型训练到推理部署的完整方案落地，并有时序预测方向一作论文在投。
+\end{abstract}
+
+\sectionTitle{教育背景}{\faGraduationCap}
+\begin{educations}
+  \education%
+    {2024.09}%
+    [至今]%
+    {南京理工大学}%
+    {计算机学院}%
+    {计算机技术}%
+    {硕士 \quad 排名前 5\% \quad 一等奖学金}
+  \separator{0.5ex}
+  \education%
+    {2020.09}%
+    [2024.06]%
+    {齐鲁工业大学（山东省科学院）}%
+    {计算机科学与技术学院}%
+    {计算机科学与技术}%
+    {本科 \quad 排名前 3\% \quad 四次一等奖学金}
+\end{educations}
+
+\sectionTitle{比赛经历}{\faTrophy}
+\begin{itemize}
+  \item \textbf{KDD Cup 2024 学术论文问答检索挑战赛} \hfill 2024.05 -- 2024.07
+  \begin{itemize}
+    \item \textbf{任务背景}: 面向学术问答场景，从海量论文中检索与专业问题最匹配的候选论文。
+    \item \textbf{方案设计}: 针对复杂 Query 冗长、语义匹配难的问题，设计 ``问题精炼 + 向量召回 + 重排序'' 两阶段检索方案；基于 Llama3 对 Query 进行精炼总结，使用 BGE M3 对 Query 与论文语料统一向量化，结合 FAISS 召回 Top100 候选论文，再引入 BGE-Reranker 对结果精排筛选 Top20。
+    \item \textbf{优化细节}: 通过 Hard Example Mining 构建微调数据，对 Reranker 进行专项优化，提升困难样本区分能力。
+    \item \textbf{结果}: 官方测试集检索分数从 0.138 提升至 0.166，较基线提升约 20.3\%。
+  \end{itemize}
+
+  \item \textbf{``天翼云息壤杯'' AI 大赛：大语言模型数学推理能力提升} \hfill 2024.11 -- 2025.07
+  \begin{itemize}
+    \item \textbf{任务背景}: 基于 Qwen3-8B 开展微调训练，提升模型对复杂数学问题与深度推理的理解求解能力。
+    \item \textbf{方案设计}: 围绕数学推理任务长链路推导困难、监督样本质量不足的问题，设计 ``数据蒸馏 + 质量筛选 + 参数高效微调'' 整体方案；基于 MetaMathQA 构建数据集，利用 Qwen2.5-Math-72B 蒸馏生成 10 万条高质量 CoT 样本，并结合 Math-Verify 与 Qwen2.5-72B 评审模型做答案校验。
+    \item \textbf{工程落地}: 在 8 卡昇腾 910B 64G 环境完成 Qwen3-8B 的 LoRA 微调，并结合 vLLM 优化推理性能，实现训推一体化部署。
+    \item \textbf{结果}: 微调后的 Qwen3-8B 在客观数学题上的正确率从 38\% 提升至 62\%。
+  \end{itemize}
+\end{itemize}
+
+\sectionTitle{项目经历}{\faCode}
+\begin{itemize}
+  \item \textbf{基于语义 ID 对齐与强化偏好优化的生成式商品推荐} \hfill 2025.09 -- 2026.03
+  \begin{itemize}
+    \item \textbf{项目背景}: 面向用户历史商品序列预测下一商品的推荐场景，针对传统推荐模型嵌入依赖强、扩展性不足的问题，将推荐任务重构为序列生成过程。
+    \item \textbf{语义 ID 构造}: 将商品标题与描述编码为语义向量，经 RQ-VAE 残差量化为 3 个离散 SID Token，并扩展至大模型词表，使模型具备商品语义编码的识别与生成能力。
+    \item \textbf{多任务 SFT}: 联合推荐任务与语义对齐任务进行监督微调；以前序商品 SID 序列预测下一商品 SID，同时通过商品文本与 SID 的双向映射建立语义对齐关系，增强模型对 SID 含义的理解能力。
+    \item \textbf{排序感知 RL}: 在 SFT 基础上引入基于 GRPO 的强化学习优化，结合约束解码与 Beam Search 生成多样化候选商品 SID，并设计正确性奖励与排序感知奖励函数，提升候选质量与排序效果。
+    \item \textbf{结果}: Qwen2.5-3B 在 Amazon Reviews 数据集上的 HR@10 和 NDCG@10 分别达到 0.134 和 0.093，较传统推荐方法分别提升约 23\% 和 16\%。
+  \end{itemize}
+\end{itemize}
+
+\sectionTitle{科研成果}{\faAtom}
+\begin{itemize}
+  \item \textbf{Non-Stationary Time Series Forecasting Considering Cascaded Decomposable Normalization} \hfill 一作，DMKD CCF-B，Under Review
+  \begin{itemize}
+    \item 提出级联可分解归一化框架（CDN），通过先解耦时间序列中的趋势项与季节项，再分别进行多尺度细粒度归一化与针对性建模，有效缓解真实时间序列中的分布偏移和成分干扰问题。
+  \end{itemize}
+\end{itemize}
+
+\sectionTitle{荣誉奖项}{\faTrophy}
+\begin{itemize}
+  \item ``天翼云息壤杯'' 高校 AI 大模型比赛（华为）国家级三等奖
+  \item ICCV 2025 感知测试挑战赛：点 \& 目标联合跟踪，国家级冠军
+  \item CVPR 2025 夜间摄影渲染挑战赛，国家级冠军
+  \item CVPR 2026 夜间人像 AI 闪光挑战赛（OPPO），国家级三等奖
+  \item WACV 2025 目标距离估计挑战赛，国家级冠军
+  \item 第十二届山东省 ICPC 大学生程序设计竞赛，省级铜奖
+  \item 第十三届蓝桥杯全国总决赛 C/C++ B 组，国家级二等奖
+\end{itemize}
+
+\end{document}

@@ -79,12 +79,24 @@
 
 % Fonts
 \defaultfontfeatures{Mapping=tex-text}
-\setmainfont{IBM Plex Serif}
-\setmonofont{IBM Plex Mono}
+\IfFontExistsTF{IBM Plex Serif}{%
+  \setmainfont{IBM Plex Serif}
+}{%
+  \setmainfont{Times New Roman}
+}
+\IfFontExistsTF{IBM Plex Mono}{%
+  \setmonofont{IBM Plex Mono}
+}{%
+  \setmonofont{Menlo}
+}
 
 % Chinese setup
 \ifdef{\@zh}{
-  \setCJKmainfont{Noto Serif CJK SC}
+  \IfFontExistsTF{Noto Serif CJK SC}{%
+    \setCJKmainfont{Noto Serif CJK SC}
+  }{%
+    \setCJKmainfont{Songti SC}
+  }
   % Redefine '\emph' to bold style
   % Credit: https://tex.stackexchange.com/a/227644
   \let\emph\relax  % there's no \RedeclareTextFontCommand
