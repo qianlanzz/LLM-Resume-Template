@@ -4,9 +4,9 @@
 
 \documentclass[zh]{resume}
 
-\setmainfont{Times New Roman}
-\setmonofont{Menlo}
-\setCJKmainfont{Songti SC}
+\setmainfont{TeX Gyre Termes}
+\setmonofont{Noto Sans Mono}
+\setCJKmainfont{Noto Serif CJK SC}
 
 \fileinfo{%
   \faCopyright{} 2026, Zhang Zhe \hspace{0.5em}
@@ -14,6 +14,15 @@
 }
 
 \name{哲}{张}
+\makeatletter
+\def\@photo@width{2.35cm}
+\def\@photo@position{right}
+\def\@photo{%
+  \begin{minipage}{\@photo@width}
+    \includegraphics[width=\linewidth]{zhangzhe.jpg}%
+  \end{minipage}%
+}
+\makeatother
 
 \keywords{大模型, 检索增强, 数学推理, 生成式推荐, 知识蒸馏, LoRA, 强化学习}
 
@@ -91,13 +100,10 @@
 
 \sectionTitle{荣誉奖项}{\faTrophy}
 \begin{itemize}
-  \item ``天翼云息壤杯'' 高校 AI 大模型比赛（华为）国家级三等奖
-  \item ICCV 2025 感知测试挑战赛：点 \& 目标联合跟踪，国家级冠军
-  \item CVPR 2025 夜间摄影渲染挑战赛，国家级冠军
-  \item CVPR 2026 夜间人像 AI 闪光挑战赛（OPPO），国家级三等奖
   \item WACV 2025 目标距离估计挑战赛，国家级冠军
-  \item 第十二届山东省 ICPC 大学生程序设计竞赛，省级铜奖
-  \item 第十三届蓝桥杯全国总决赛 C/C++ B 组，国家级二等奖
+  \item ICCV 2025 感知测试挑战赛：多项选择题视频问答，国家级冠军
+  \item ``天翼云息壤杯'' 高校 AI 大模型比赛（华为）国家级三等奖
+  \item CVPR 2025 少样本目标检测，国家级三等奖
 \end{itemize}
 
 \end{document}
