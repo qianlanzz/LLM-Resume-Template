@@ -153,6 +153,8 @@ make zh
 # 或
 xelatex resume-zh.tex
 xelatex resume-zh.tex
+
+latexmk -xelatex resume-zhangzhe.tex
 ```
 
 ## 📝 使用指南
