@@ -89,12 +89,12 @@
 
 \sectionTitle{项目经历}{\faCode}
 \begin{itemize}
-  \item \textbf{智能运维诊断 Agent（基于 DeerFlow 框架）} \hfill 2026.01 -- 至今
+  \item \textbf{OCR 运维诊断 Agent（DeerFlow / LangGraph）} \hfill 2026.01 -- 至今
   \begin{itemize}
-    \item \textbf{项目背景}: 针对录题审核系统线上告警响应慢、故障定位依赖人工经验的问题，基于字节开源 Agent 框架 DeerFlow，设计并实现一套智能运维诊断 Agent，实现告警自动分类、根因分析与修复建议生成的端到端闭环。
-    \item \textbf{Agent 架构}: 基于 LangGraph StateGraph 构建三阶段诊断流水线——Triage（告警分类与严重度评估）$\rightarrow$ Diagnosis（根因分析，置信度 $<$ 0.7 时自动循环深入排查，最多 3 轮）$\rightarrow$ Report（生成结构化诊断报告与修复建议）；通过 DiagnosisState 管理告警类型、指标快照、日志分析、相似案例、置信度等全链路状态。
-    \item \textbf{MCP 工具集成}: 开发 3 个自定义 MCP Server 对接生产环境——Prometheus Server（封装 PromQL 查询，提供 CPU/内存/API P95 延迟/队列状态等 8 项预设指标）、Docker Server（容器列表/日志/资源统计，支持白名单隔离）、Logs Server（PostgreSQL 慢查询/Redis 慢查询/Nginx 访问日志的检索与分析）。
-    \item \textbf{知识库与评估}: 基于 ChromaDB 构建历史故障案例向量库，支持相似案例检索辅助诊断；设计评估框架，通过 Precision/Recall/F1 和平均置信度量化诊断准确性。
+    \item \textbf{项目定位}: 面向 OCR 录题审核系统的运维场景，设计并落地 AIOps Agent，支持运维人员以自然语言输入告警或排障问题，系统自动完成告警分类、证据采集、根因分析和处置建议生成。
+    \item \textbf{Agent 编排}: 基于 LangGraph StateGraph 设计 Triage $\rightarrow$ Diagnosis $\rightarrow$ Report 三阶段工作流，使用 DiagnosisState 管理告警类型、指标快照、日志分析、相似案例、置信度等状态；在 Diagnosis 阶段采用“规则诊断 + LLM 校对”的混合策略，降低纯模型推断带来的误判风险。
+    \item \textbf{工具调用与联调}: 接入 Prometheus 指标查询、Docker 容器状态/日志采集和历史案例检索，覆盖 API P95、队列 waiting/failed/workers、CPU/内存占用等关键证据；完成与 OCR 开发环境的真实联调，诊断链路可直接基于运行态数据输出分析结果。
+    \item \textbf{可观测性与工程落地}: 开发 AIOps 诊断台，基于 SSE 实现 Agent 过程流式展示，支持逐步回放 triage、指标采集、日志分析、案例检索、LLM 校对和报告生成的输入/输出；补充接口测试与联调脚本，便于故障复盘和面试演示。
   \end{itemize}
 
   \item \textbf{教辅录题审核一体化系统} \hfill 2025.06 -- 至今
