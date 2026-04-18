@@ -8,6 +8,11 @@
 \setmonofont{Noto Sans Mono}
 \setCJKmainfont{Noto Serif CJK SC}
 
+% 紧凑排版
+\usepackage{enumitem}
+\setlist[itemize]{itemsep=1pt, topsep=3pt, parsep=0pt, partopsep=0pt}
+\setlist[itemize,2]{itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt}
+
 \fileinfo{%
   \faCopyright{} 2026, Zhang Zhe \hspace{0.5em}
   \faEdit{} \today
@@ -24,7 +29,7 @@
 }
 \makeatother
 
-\keywords{Agent 开发, LangGraph, MCP, 全栈开发, LLM 应用, 智能运维, Vue3, Node.js}
+\keywords{Agent 系统, LangGraph, MCP, RAG, Django, 智能运维, Vue3, Node.js}
 
 \profile{
   \mobile{13160006317}
@@ -37,7 +42,7 @@
 \makeheader
 
 \begin{abstract}
-南京理工大学软件工程研究生在读，本科毕业于南通大学软件工程专业。具备 Agent 系统设计与全栈工程开发能力，熟悉 LangGraph/LangChain 多智能体编排、MCP 工具协议集成及 LLM 应用落地；主导开发基于 LangGraph 的智能运维诊断 Agent 和教辅录题审核一体化平台，覆盖从 Agent 架构设计、后端服务开发到前端交互的完整链路；同时在 RAG 检索增强、模型微调与强化学习方向有竞赛实践经验。
+南京理工大学软件工程硕士在读，聚焦 Agent 系统与 LLM 应用工程。熟悉 LangGraph 工作流编排、MCP 工具接入、RAG 检索增强，具备从状态图设计、工具服务开发到前端可视化的全链路落地能力。主导实现 OCR 运维诊断 Agent 和教辅录题审核系统，在模型微调与检索优化方向具备竞赛实践经验（KDD Cup、天翼云息壤杯）。技术栈覆盖 Python/Node.js 后端、Vue 3 前端及 Docker 容器化部署。
 \end{abstract}
 
 \sectionTitle{教育背景}{\faGraduationCap}
@@ -63,63 +68,66 @@
 \begin{itemize}
   \item \textbf{KDD Cup 2024 学术论文问答检索挑战赛} \hfill 2024.05 -- 2024.07
   \begin{itemize}
-    \item \textbf{任务背景}: 面向学术问答场景，从海量论文中检索与专业问题最匹配的候选论文。
-    \item \textbf{方案设计}: 针对复杂 Query 冗长、语义匹配难的问题，设计 ``问题精炼 + 向量召回 + 重排序'' 两阶段检索方案；基于 Llama3 对 Query 进行精炼总结，使用 BGE M3 对 Query 与论文语料统一向量化，结合 FAISS 召回 Top100 候选论文，再引入 BGE-Reranker 对结果精排筛选 Top20。
-    \item \textbf{优化细节}: 通过 Hard Example Mining 构建微调数据，对 Reranker 进行专项优化，提升困难样本区分能力。
-    \item \textbf{结果}: 官方测试集检索分数从 0.138 提升至 0.166，较基线提升约 20.3\%。
+    \item \textbf{任务背景}: 面向学术问答场景，从海量论文中检索与专业问题最匹配的候选论文，核心挑战在于复杂 Query 冗长、语义匹配困难。
+    \item \textbf{方案设计}: 设计``问题精炼 + 向量召回 + 重排序''两阶段检索方案——基于 Llama3 对 Query 精炼总结，使用 BGE M3 统一向量化，结合 FAISS 召回 Top100 候选，再引入 BGE-Reranker 精排筛选 Top20；通过 Hard Example Mining 构建微调数据，对 Reranker 进行专项优化，提升困难样本区分能力。
+    \item \textbf{最终成果}: 官方测试集检索分数从 0.138 提升至 0.166，较基线提升约 20.3\%。
   \end{itemize}
 
   \item \textbf{``天翼云息壤杯'' AI 大赛：大语言模型数学推理能力提升} \hfill 2024.11 -- 2025.07
   \begin{itemize}
     \item \textbf{任务背景}: 基于 Qwen3-8B 开展微调训练，提升模型对复杂数学问题与深度推理的理解求解能力。
-    \item \textbf{方案设计}: 围绕数学推理任务长链路推导困难、监督样本质量不足的问题，设计 ``数据蒸馏 + 质量筛选 + 参数高效微调'' 整体方案；基于 MetaMathQA 构建数据集，利用 Qwen2.5-Math-72B 蒸馏生成 10 万条高质量 CoT 样本，并结合 Math-Verify 与 Qwen2.5-72B 评审模型做答案校验。
-    \item \textbf{工程落地}: 在 8 卡昇腾 910B 64G 环境完成 Qwen3-8B 的 LoRA 微调，并结合 vLLM 优化推理性能，实现训推一体化部署。
-    \item \textbf{结果}: 微调后的 Qwen3-8B 在客观数学题上的正确率从 38\% 提升至 62\%。
+    \item \textbf{方案设计}: 针对数学推理长链路推导困难、监督样本质量不足的问题，设计``数据蒸馏 + 质量筛选 + 参数高效微调''整体方案——基于 MetaMathQA 构建数据集，利用 Qwen2.5-Math-72B 蒸馏生成 10 万条高质量 CoT 样本，结合 Math-Verify 与 Qwen2.5-72B 评审模型做答案校验。
+    \item \textbf{工程落地}: 在 8 卡昇腾 910B 64G 环境完成 Qwen3-8B 的 LoRA 微调，结合 vLLM 优化推理性能，实现训推一体化部署。
+    \item \textbf{最终成果}: 微调后客观数学题正确率从 38\% 提升至 62\%，提升幅度达 63\%。
   \end{itemize}
 \end{itemize}
 
 \sectionTitle{专业技能}{\faCogs}
 \begin{itemize}
-  \item \textbf{Agent 开发}: 熟悉 LangGraph 状态图编排与多智能体架构设计，掌握条件路由、循环诊断、子图嵌套等复杂工作流构建；熟悉 MCP（Model Context Protocol）工具协议，具备自定义 MCP Server 开发经验。
-  \item \textbf{LLM 应用}: 熟悉 LangChain 工具链与 Prompt Engineering，具备 RAG 检索增强（向量召回 + 重排序）、知识蒸馏、LoRA 微调及 GRPO 强化学习实践经验；了解 vLLM 推理部署。
-  \item \textbf{后端开发}: 熟悉 Python（FastAPI）和 Node.js（Fastify）后端开发，掌握 PostgreSQL、Redis、BullMQ 消息队列；具备 Prisma ORM、JWT 认证、RESTful API 设计经验。
-  \item \textbf{前端开发}: 熟悉 Vue 3 + TypeScript + Vite 技术栈，了解 React/Next.js；掌握 Ant Design Vue、Pinia 状态管理、动态路由等前端工程化实践。
-  \item \textbf{DevOps}: 熟悉 Docker/Docker Compose 容器化部署，掌握 Prometheus + Grafana 监控体系搭建，具备 Nginx 反向代理、CI/CD 流程配置经验。
+  \item \textbf{Agent 开发}: 熟悉 LangGraph 状态图编排（条件路由、循环节点、状态管理），能设计带工具调用、可追踪回放的 Tool-use Agent；熟悉 MCP 协议，具备自定义工具服务开发经验。
+  \item \textbf{LLM 应用}: 熟悉 LangChain 工具链与 Prompt 设计，具备 RAG（向量召回 + 重排序）、知识蒸馏、LoRA 微调及 GRPO 强化学习实践经验；了解 vLLM 推理部署。
+  \item \textbf{后端开发}: 熟悉 Python（FastAPI/Django）和 Node.js（Fastify）后端开发，掌握 RESTful API、SSE 流式接口、PostgreSQL/MySQL、Redis、Celery/BullMQ 消息队列及 JWT 认证。
+  \item \textbf{前端开发}: 熟悉 Vue 3 + TypeScript + Vite，了解 React/Next.js；掌握 Element Plus、Pinia、动态路由等工程化实践，能实现 Agent 执行过程可视化。
+  \item \textbf{DevOps}: 熟悉 Docker/Docker Compose 容器化部署，掌握 MinIO 对象存储、Prometheus + Grafana 监控体系及 Nginx 反向代理。
+\end{itemize}
+
+\sectionTitle{实习经历}{\faBriefcase}
+\begin{itemize}
+  \item \textbf{中国电子科技集团公司第二十八研究所（智能模型资源管理平台研发实习）} \hfill 2025.09 -- 至今
+  \begin{itemize}
+    \item \textbf{项目定位}: 参与面向航天领域的 AI 模型全生命周期管理平台开发，技术栈为 Django + Vue 3，覆盖模型、算法、数据集的版本管理、自动化审核、容器化部署与语义检索，涉及 30+ 数据模型、20+ 前端页面。
+    \item \textbf{语义向量检索引擎}: 针对平台模型资源数量增长后关键词检索召回率不足的问题，基于 Qwen3-Embedding-0.6B 与 FAISS 搭建语义检索服务，支持用户以自然语言任务描述检索模型库；设计增量索引更新机制，通过 Django Signal 监听模型元数据及关联关系变更自动触发重建，避免全量重建开销；索引读写采用 clone-on-read 快照隔离保证搜索无锁并发，持久化通过原子文件替换保证崩溃安全；上线后模型检索从纯关键词匹配升级为语义级召回，用户定位目标模型的平均交互轮次显著减少。
+    \item \textbf{容器化部署与镜像交付}: 基于 Docker SDK 实现模型服务全生命周期管理，涵盖镜像拉取、权重挂载、健康检查，Celery Beat 驱动 60s 周期服务探活与 10min 故障自动恢复；镜像导入采用 download $\rightarrow$ load $\rightarrow$ tag $\rightarrow$ push $\rightarrow$ register 五阶段状态机，任意阶段失败自动清理本地镜像、tar 文件及 MinIO 临时对象，成功后自动回填版本镜像字段并同步 ImageAsset 记录。
+    \item \textbf{个性化推荐与智能分析}: 实现三路混合推荐引擎——40\% 协同过滤基于 Jaccard 相似度衡量用户-资源交互重合度，30\% 内容推荐根据用户活跃时段与操作类型分布构建画像匹配资源标签，30\% 热度排序综合活跃度、独立用户数、收藏数与下载量加权评分；同时基于 DBSCAN 聚类对系统 5 维指标做异常检测，结合线性回归趋势预测生成容量预警。
+  \end{itemize}
 \end{itemize}
 
 \sectionTitle{项目经历}{\faCode}
 \begin{itemize}
   \item \textbf{OCR 运维诊断 Agent（DeerFlow / LangGraph）} \hfill 2026.01 -- 至今
   \begin{itemize}
-    \item \textbf{项目定位}: 面向 OCR 录题审核系统的运维场景，设计并落地 AIOps Agent，支持运维人员以自然语言输入告警或排障问题，系统自动完成告警分类、证据采集、根因分析和处置建议生成。
-    \item \textbf{Agent 编排}: 基于 LangGraph StateGraph 设计 Triage $\rightarrow$ Diagnosis $\rightarrow$ Report 三阶段工作流，使用 DiagnosisState 管理告警类型、指标快照、日志分析、相似案例、置信度等状态；在 Diagnosis 阶段采用“规则诊断 + LLM 校对”的混合策略，降低纯模型推断带来的误判风险。
-    \item \textbf{工具调用与联调}: 接入 Prometheus 指标查询、Docker 容器状态/日志采集和历史案例检索，覆盖 API P95、队列 waiting/failed/workers、CPU/内存占用等关键证据；完成与 OCR 开发环境的真实联调，诊断链路可直接基于运行态数据输出分析结果。
-    \item \textbf{可观测性与工程落地}: 开发 AIOps 诊断台，基于 SSE 实现 Agent 过程流式展示，支持逐步回放 triage、指标采集、日志分析、案例检索、LLM 校对和报告生成的输入/输出；补充接口测试与联调脚本，便于故障复盘和面试演示。
+    \item \textbf{项目背景}: 面向 OCR 服务运维场景，运维人员需要快速定位告警根因并获取处置建议，传统人工排查效率低、依赖经验。
+    \item \textbf{诊断链路设计}: 基于 DeerFlow / LangGraph 构建 Triage $\rightarrow$ Diagnosis $\rightarrow$ Report 三阶段工作流，支持自然语言输入告警或排障问题，自动完成告警分类、证据收集、根因分析与处置建议生成。
+    \item \textbf{工具接入与分析}: 接入 Prometheus 指标查询、Docker 容器状态与日志采集、历史案例检索等诊断工具，覆盖 API P95、队列 waiting/failed/workers、CPU/内存占用等关键证据；Diagnosis 阶段采用规则诊断 + LLM 校对策略，降低纯模型推断的误判风险。
+    \item \textbf{可观测性}: 开发 AIOps 诊断台，基于 SSE 展示 Agent 各阶段输入输出与分析过程，支持诊断链路回放，便于故障复盘与演示。
   \end{itemize}
 
   \item \textbf{教辅录题审核一体化系统} \hfill 2025.06 -- 至今
   \begin{itemize}
-    \item \textbf{项目背景}: 面向教辅出版行业，构建覆盖 PDF 教材上传、教师录题、质检抽检、百度教辅系统入库全流程的数字化生产管理平台，替代原有 Excel + 多工具的碎片化工作流。
-    \item \textbf{技术架构}: 前端基于 Vue 3 + TypeScript + Ant Design Vue 构建录题工作台（PDF 双栏标注、OCR 识别、公式渲染、草稿自动保存）；后端基于 Fastify + Prisma + PostgreSQL + Redis，采用 BullMQ 持久化队列处理 PDF 拆分、MinerU 内容提取、自动切题等异步任务。
-    \item \textbf{自动切题}: 设计 LLM 驱动的自动切题流水线——读取 MinerU 结构化 PDF 内容，按章节页码范围分组，调用大模型提取结构化题目数据；支持分块处理大文档，LLM 失败时自动降级为基于题号索引的规则切题，结果经去重后回填至目录树。
-    \item \textbf{运维监控}: 集成 Prometheus + Grafana 监控体系，暴露队列健康、API 延迟、Worker 状态等核心指标；配置告警规则覆盖 P95 延迟、Worker 离线、高 CPU 等场景，为上层运维 Agent 提供数据源。
+    \item \textbf{项目背景}: 原有教辅录题依赖 Excel + 多工具协作，流程碎片化、效率低，需要一套打通上传、录题、质检、入库全链路的一体化系统。
+    \item \textbf{主流程建设}: 基于 Vue 3 + TypeScript、Fastify + Prisma + PostgreSQL + Redis 开发录题工作台及后端服务，支持 PDF 双栏浏览、框选 OCR、公式渲染、草稿自动保存，打通教材上传到结果入库的完整链路。
+    \item \textbf{结构化自动切题}: 主导自动切题模块，基于 MinerU 的块级坐标解析与目录分段能力将教材 PDF 转换为结构化内容，结合大模型完成题号、题干、选项、答案、解析抽取，基于``章节标题 + 题号''实现题答配对，生成包含编号、页码、坐标、题型等字段的标注结果回写工作台。
+    \item \textbf{稳定性治理}: 基于 BullMQ 承接 PDF 拆页、MinerU 解析与自动切题等长任务，避免重任务阻塞工作台；补充队列监控告警、草稿缓存与历史恢复、提交前校验等机制，降低卡顿、丢稿和返工风险。
   \end{itemize}
 \end{itemize}
 
-\sectionTitle{科研成果}{\faAtom}
-\begin{itemize}
-  \item \textbf{QTSF-Net: Quality-aware and Target-guided Weakly Supervised Fusion Network for Multimodal Small Object Detection} \hfill 一作，Under Review
-  \begin{itemize}
-    \item 针对可见光-红外多模态小目标检测中模态质量失衡、小目标细节丢失和模态缺失鲁棒性不足三大问题，提出 QTSF-Net：设计质量感知跨模态融合模块（QCFM），通过通道级质量评估与空间质量图实现逐通道逐区域的自适应融合；提出目标引导的小目标细节补偿模块（TSDCM），以候选热力图引导 P2 高分辨率特征按需查询，避免全局处理的计算开销；引入模态退化一致性训练策略（MDCTS），结合预测蒸馏与 ROI 级跨模态对比学习增强单模态鲁棒性。
-  \end{itemize}
-\end{itemize}
 
 \sectionTitle{荣誉奖项}{\faTrophy}
 \begin{itemize}
-  \item WACV 2025 目标距离估计挑战赛，国家级冠军
-  \item ICCV 2025 感知测试挑战赛：多项选择题视频问答，国家级冠军
-  \item ``天翼云息壤杯'' 高校 AI 大模型比赛（华为）国家级三等奖
-  \item CVPR 2025 少样本目标检测，国家级三等奖
+  \item ICCV 2025 感知测试挑战赛：多项选择题视频问答 \hfill 冠军
+  \item WACV 2025 目标距离估计挑战赛 \hfill 冠军
+  \item CVPR 2025 少样本目标检测 \hfill 三等奖
+  \item 天翼云息壤杯高校 AI 大模型比赛（华为） \hfill 三等奖
 \end{itemize}
 
 \end{document}
