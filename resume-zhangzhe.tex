@@ -29,7 +29,7 @@
 }
 \makeatother
 
-\keywords{Agent 系统, LangGraph, MCP, RAG, Django, 智能运维, Vue3, Node.js}
+\keywords{Agent 框架, LangGraph, MCP, Tool-use, RAG, Memory, 智能运维, Django, Vue3}
 
 \profile{
   \mobile{13160006317}
@@ -42,7 +42,7 @@
 \makeheader
 
 \begin{abstract}
-南京理工大学软件工程硕士在读，聚焦 Agent 系统与 LLM 应用工程。熟悉 LangGraph 工作流编排、MCP 工具接入、RAG 检索增强，具备从状态图设计、工具服务开发到前端可视化的全链路落地能力。主导实现 OCR 运维诊断 Agent 和教辅录题审核系统，在模型微调与检索优化方向具备竞赛实践经验（KDD Cup、天翼云息壤杯）。技术栈覆盖 Python/Node.js 后端、Vue 3 前端及 Docker 容器化部署。
+南京理工大学软件工程硕士在读，聚焦 LLM Agent 系统工程与应用落地。熟悉 LangGraph 状态图编排、MCP 工具协议、双水位记忆与 RAG 检索增强，具备从 Agent 框架自研、工具/技能插件化、全链路审计监控到前端可视化的端到端落地能力。自研开源透明可控 Agent 框架 AgentBot，主导实现 OCR 运维诊断 Agent 与教辅录题审核系统；在模型微调与检索优化方向具备 KDD Cup、天翼云息壤杯等竞赛实战经验。技术栈覆盖 Python/Node.js 后端、Vue 3 前端及 Docker 容器化部署。
 \end{abstract}
 
 \sectionTitle{教育背景}{\faGraduationCap}
@@ -84,7 +84,7 @@
 
 \sectionTitle{专业技能}{\faCogs}
 \begin{itemize}
-  \item \textbf{Agent 开发}: 熟悉 LangGraph 状态图编排（条件路由、循环节点、状态管理），能设计带工具调用、可追踪回放的 Tool-use Agent；熟悉 MCP 协议，具备自定义工具服务开发经验。
+  \item \textbf{Agent 开发}: 熟悉 LangGraph 状态图编排（StateGraph、条件路由、ToolNode、Checkpointer），能独立设计带工具调用、多轮循环、可追踪回放的 Tool-use Agent；熟悉两段式工具调用、双水位记忆与上下文裁剪、JSONL 事件审计等 Agent 工程化模式；熟悉 MCP 协议与技能插件机制，具备自定义工具服务及多模型提供商适配经验。
   \item \textbf{LLM 应用}: 熟悉 LangChain 工具链与 Prompt 设计，具备 RAG（向量召回 + 重排序）、知识蒸馏、LoRA 微调及 GRPO 强化学习实践经验；了解 vLLM 推理部署。
   \item \textbf{后端开发}: 熟悉 Python（FastAPI/Django）和 Node.js（Fastify）后端开发，掌握 RESTful API、SSE 流式接口、PostgreSQL/MySQL、Redis、Celery/BullMQ 消息队列及 JWT 认证。
   \item \textbf{前端开发}: 熟悉 Vue 3 + TypeScript + Vite，了解 React/Next.js；掌握 Element Plus、Pinia、动态路由等工程化实践，能实现 Agent 执行过程可视化。
@@ -104,12 +104,13 @@
 
 \sectionTitle{项目经历}{\faCode}
 \begin{itemize}
-  \item \textbf{OCR 运维诊断 Agent（DeerFlow / LangGraph）} \hfill 2026.01 -- 至今
+  \item \textbf{AgentBot · LLM Agent 框架（开源个人项目）} \hfill 2025.10 -- 至今
   \begin{itemize}
-    \item \textbf{项目背景}: 面向 OCR 服务运维场景，运维人员需要快速定位告警根因并获取处置建议，传统人工排查效率低、依赖经验。
-    \item \textbf{诊断链路设计}: 基于 DeerFlow / LangGraph 构建 Triage $\rightarrow$ Diagnosis $\rightarrow$ Report 三阶段工作流，支持自然语言输入告警或排障问题，自动完成告警分类、证据收集、根因分析与处置建议生成。
-    \item \textbf{工具接入与分析}: 接入 Prometheus 指标查询、Docker 容器状态与日志采集、历史案例检索等诊断工具，覆盖 API P95、队列 waiting/failed/workers、CPU/内存占用等关键证据；Diagnosis 阶段采用规则诊断 + LLM 校对策略，降低纯模型推断的误判风险。
-    \item \textbf{可观测性}: 开发 AIOps 诊断台，基于 SSE 展示 Agent 各阶段输入输出与分析过程，支持诊断链路回放，便于故障复盘与演示。
+    \item 基于 LangGraph StateGraph 搭建的 CLI Agent，核心是 agent $\leftrightarrow$ tools 循环工作流，支持多轮工具调用与条件路由；通过统一的 Provider 工厂适配 OpenAI / Anthropic / 阿里云等 6 家模型 API，运行时可热切换。
+    \item 记忆分两层：长期记忆用 Markdown 文件存用户偏好，LLM 通过 Tool Call 自己决定什么时候更新，跨会话保留；短期记忆基于 SQLite Checkpointer 存完整对话，按回合切分，超 40 轮后自动让 LLM 把旧对话压缩成摘要再裁掉原文，长对话 Token 用量降低约 60\%。
+    \item 内置 12 个工具（时间、计算器、任务调度、文件读写、Shell 执行等），工具调用走 LangChain @tool 标准接口；文件和 Shell 操作限制在沙盒目录内，通过路径前缀校验拦截穿越，正则匹配拦截 rm -rf 等危险命令，Shell 执行设 60s 超时。
+    \item 技能（Skill）是可热插拔的外部扩展，放一个带 SKILL.md 的目录就能自动扫描注册为 LangChain Tool；执行前 LLM 先读 SKILL.md 了解用法和副作用再决定是否调用，自建 20 组评测集验证该机制将误操作率从 50\% 降至 10\%；同时支持通过 MCP 协议接入外部工具服务。
+    \item 所有 LLM 输入、工具调用、工具返回、AI 回复、系统动作共 5 类事件写入 JSONL 审计日志（单例 + 内存队列 + 守护线程异步落盘），配套 Rich 终端可实时查看 Agent 每一步的决策过程。
   \end{itemize}
 
   \item \textbf{教辅录题审核一体化系统} \hfill 2025.06 -- 至今
