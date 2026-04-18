@@ -42,7 +42,7 @@
 \makeheader
 
 \begin{abstract}
-南京理工大学软件工程硕士在读，聚焦 LLM Agent 系统工程与应用落地。熟悉 LangGraph 状态图编排、MCP 工具协议、双水位记忆与 RAG 检索增强，具备从 Agent 框架自研、工具/技能插件化、全链路审计监控到前端可视化的端到端落地能力。自研开源透明可控 Agent 框架 AgentBot，主导实现 OCR 运维诊断 Agent 与教辅录题审核系统；在模型微调与检索优化方向具备 KDD Cup、天翼云息壤杯等竞赛实战经验。技术栈覆盖 Python/Node.js 后端、Vue 3 前端及 Docker 容器化部署。
+南京理工大学软件工程硕士在读，方向为 LLM Agent 开发与应用。熟悉 LangGraph 状态图编排、MCP 工具协议与 RAG 检索增强，有 Agent 框架开发、工具插件化、记忆管理与审计监控的实践经验。独立开发开源 Agent 框架 AgentBot，主导教辅录题审核系统开发；在 KDD Cup、天翼云息壤杯等竞赛中有模型微调与检索优化实战经验。技术栈覆盖 Python/Node.js 后端、Vue 3 前端及 Docker 容器化部署。
 \end{abstract}
 
 \sectionTitle{教育背景}{\faGraduationCap}
@@ -64,41 +64,14 @@
     {本科}
 \end{educations}
 
-\sectionTitle{比赛经历}{\faTrophy}
-\begin{itemize}
-  \item \textbf{KDD Cup 2024 学术论文问答检索挑战赛} \hfill 2024.05 -- 2024.07
-  \begin{itemize}
-    \item \textbf{任务背景}: 面向学术问答场景，从海量论文中检索与专业问题最匹配的候选论文，核心挑战在于复杂 Query 冗长、语义匹配困难。
-    \item \textbf{方案设计}: 设计``问题精炼 + 向量召回 + 重排序''两阶段检索方案——基于 Llama3 对 Query 精炼总结，使用 BGE M3 统一向量化，结合 FAISS 召回 Top100 候选，再引入 BGE-Reranker 精排筛选 Top20；通过 Hard Example Mining 构建微调数据，对 Reranker 进行专项优化，提升困难样本区分能力。
-    \item \textbf{最终成果}: 官方测试集检索分数从 0.138 提升至 0.166，较基线提升约 20.3\%。
-  \end{itemize}
-
-  \item \textbf{``天翼云息壤杯'' AI 大赛：大语言模型数学推理能力提升} \hfill 2024.11 -- 2025.07
-  \begin{itemize}
-    \item \textbf{任务背景}: 基于 Qwen3-8B 开展微调训练，提升模型对复杂数学问题与深度推理的理解求解能力。
-    \item \textbf{方案设计}: 针对数学推理长链路推导困难、监督样本质量不足的问题，设计``数据蒸馏 + 质量筛选 + 参数高效微调''整体方案——基于 MetaMathQA 构建数据集，利用 Qwen2.5-Math-72B 蒸馏生成 10 万条高质量 CoT 样本，结合 Math-Verify 与 Qwen2.5-72B 评审模型做答案校验。
-    \item \textbf{工程落地}: 在 8 卡昇腾 910B 64G 环境完成 Qwen3-8B 的 LoRA 微调，结合 vLLM 优化推理性能，实现训推一体化部署。
-    \item \textbf{最终成果}: 微调后客观数学题正确率从 38\% 提升至 62\%，提升幅度达 63\%。
-  \end{itemize}
-\end{itemize}
-
-\sectionTitle{专业技能}{\faCogs}
-\begin{itemize}
-  \item \textbf{Agent 开发}: 熟悉 LangGraph 状态图编排（StateGraph、条件路由、ToolNode、Checkpointer），能独立设计带工具调用、多轮循环、可追踪回放的 Tool-use Agent；熟悉两段式工具调用、双水位记忆与上下文裁剪、JSONL 事件审计等 Agent 工程化模式；熟悉 MCP 协议与技能插件机制，具备自定义工具服务及多模型提供商适配经验。
-  \item \textbf{LLM 应用}: 熟悉 LangChain 工具链与 Prompt 设计，具备 RAG（向量召回 + 重排序）、知识蒸馏、LoRA 微调及 GRPO 强化学习实践经验；了解 vLLM 推理部署。
-  \item \textbf{后端开发}: 熟悉 Python（FastAPI/Django）和 Node.js（Fastify）后端开发，掌握 RESTful API、SSE 流式接口、PostgreSQL/MySQL、Redis、Celery/BullMQ 消息队列及 JWT 认证。
-  \item \textbf{前端开发}: 熟悉 Vue 3 + TypeScript + Vite，了解 React/Next.js；掌握 Element Plus、Pinia、动态路由等工程化实践，能实现 Agent 执行过程可视化。
-  \item \textbf{DevOps}: 熟悉 Docker/Docker Compose 容器化部署，掌握 MinIO 对象存储、Prometheus + Grafana 监控体系及 Nginx 反向代理。
-\end{itemize}
-
 \sectionTitle{实习经历}{\faBriefcase}
 \begin{itemize}
   \item \textbf{中国电子科技集团公司第二十八研究所（智能模型资源管理平台研发实习）} \hfill 2025.09 -- 至今
   \begin{itemize}
-    \item \textbf{项目定位}: 参与面向航天领域的 AI 模型全生命周期管理平台开发，技术栈为 Django + Vue 3，覆盖模型、算法、数据集的版本管理、自动化审核、容器化部署与语义检索，涉及 30+ 数据模型、20+ 前端页面。
-    \item \textbf{语义向量检索引擎}: 针对平台模型资源数量增长后关键词检索召回率不足的问题，基于 Qwen3-Embedding-0.6B 与 FAISS 搭建语义检索服务，支持用户以自然语言任务描述检索模型库；设计增量索引更新机制，通过 Django Signal 监听模型元数据及关联关系变更自动触发重建，避免全量重建开销；索引读写采用 clone-on-read 快照隔离保证搜索无锁并发，持久化通过原子文件替换保证崩溃安全；上线后模型检索从纯关键词匹配升级为语义级召回，用户定位目标模型的平均交互轮次显著减少。
-    \item \textbf{容器化部署与镜像交付}: 基于 Docker SDK 实现模型服务全生命周期管理，涵盖镜像拉取、权重挂载、健康检查，Celery Beat 驱动 60s 周期服务探活与 10min 故障自动恢复；镜像导入采用 download $\rightarrow$ load $\rightarrow$ tag $\rightarrow$ push $\rightarrow$ register 五阶段状态机，任意阶段失败自动清理本地镜像、tar 文件及 MinIO 临时对象，成功后自动回填版本镜像字段并同步 ImageAsset 记录。
-    \item \textbf{个性化推荐与智能分析}: 实现三路混合推荐引擎——40\% 协同过滤基于 Jaccard 相似度衡量用户-资源交互重合度，30\% 内容推荐根据用户活跃时段与操作类型分布构建画像匹配资源标签，30\% 热度排序综合活跃度、独立用户数、收藏数与下载量加权评分；同时基于 DBSCAN 聚类对系统 5 维指标做异常检测，结合线性回归趋势预测生成容量预警。
+    \item 参与面向航天领域的 AI 模型全生命周期管理平台开发，技术栈为 Django + Vue 3，覆盖模型、算法、数据集的版本管理、自动化审核、容器化部署与语义检索，涉及 30+ 数据模型、20+ 前端页面。
+    \item 针对关键词检索召回率不足的问题，基于 Qwen3-Embedding-0.6B 与 FAISS 搭建语义检索服务，支持自然语言检索模型库；通过 Django Signal 监听元数据变更触发增量索引重建，索引读写采用 clone-on-read 快照隔离保证无锁并发，持久化通过原子文件替换保证崩溃安全。
+    \item 基于 Docker SDK 实现模型服务生命周期管理（镜像拉取、权重挂载、健康检查），Celery Beat 驱动 60s 周期探活与 10min 故障自动恢复；镜像导入走 download → load → tag → push → register 五阶段状态机，任意阶段失败自动清理临时资源。
+    \item 实现混合推荐（协同过滤 + 内容匹配 + 热度排序）与基于 DBSCAN 的系统指标异常检测，结合线性回归做容量趋势预警。
   \end{itemize}
 \end{itemize}
 
@@ -115,20 +88,37 @@
 
   \item \textbf{教辅录题审核一体化系统} \hfill 2025.06 -- 至今
   \begin{itemize}
-    \item \textbf{项目背景}: 原有教辅录题依赖 Excel + 多工具协作，流程碎片化、效率低，需要一套打通上传、录题、质检、入库全链路的一体化系统。
-    \item \textbf{主流程建设}: 基于 Vue 3 + TypeScript、Fastify + Prisma + PostgreSQL + Redis 开发录题工作台及后端服务，支持 PDF 双栏浏览、框选 OCR、公式渲染、草稿自动保存，打通教材上传到结果入库的完整链路。
-    \item \textbf{结构化自动切题}: 主导自动切题模块，基于 MinerU 的块级坐标解析与目录分段能力将教材 PDF 转换为结构化内容，结合大模型完成题号、题干、选项、答案、解析抽取，基于``章节标题 + 题号''实现题答配对，生成包含编号、页码、坐标、题型等字段的标注结果回写工作台。
-    \item \textbf{稳定性治理}: 基于 BullMQ 承接 PDF 拆页、MinerU 解析与自动切题等长任务，避免重任务阻塞工作台；补充队列监控告警、草稿缓存与历史恢复、提交前校验等机制，降低卡顿、丢稿和返工风险。
+    \item 原有教辅录题依赖 Excel + 多工具协作，流程碎片化、效率低，需要一套打通上传、录题、质检、入库全链路的一体化系统。
+    \item 基于 Vue 3 + TypeScript、Fastify + Prisma + PostgreSQL + Redis 开发录题工作台及后端服务，支持 PDF 双栏浏览、框选 OCR、公式渲染、草稿自动保存，打通教材上传到结果入库的完整链路。
+    \item 主导自动切题模块，基于 MinerU 的块级坐标解析与目录分段能力将教材 PDF 转换为结构化内容，结合大模型完成题号、题干、选项、答案、解析抽取，基于``章节标题 + 题号''实现题答配对，生成标注结果回写工作台。
+    \item 基于 BullMQ 承接 PDF 拆页、MinerU 解析与自动切题等长任务，避免重任务阻塞工作台；补充队列监控告警、草稿缓存与历史恢复、提交前校验等机制。
   \end{itemize}
 \end{itemize}
 
-
-\sectionTitle{荣誉奖项}{\faTrophy}
+\sectionTitle{竞赛与获奖}{\faTrophy}
 \begin{itemize}
+  \item \textbf{KDD Cup 2024 学术论文问答检索挑战赛} \hfill 2024.05 -- 2024.07
+  \begin{itemize}
+    \item 从海量论文中检索与问题最匹配的候选论文。设计``问题精炼 + 向量召回 + 重排序''方案——Llama3 精炼 Query，BGE M3 向量化 + FAISS 召回 Top100，BGE-Reranker 精排 Top20；通过 Hard Example Mining 微调 Reranker，检索分数从 0.138 提升至 0.166（+20.3\%）。
+  \end{itemize}
+
+  \item \textbf{``天翼云息壤杯'' AI 大赛：大语言模型数学推理能力提升} \hfill 2024.11 -- 2025.07
+  \begin{itemize}
+    \item 基于 Qwen2.5-Math-72B 蒸馏生成 10 万条 CoT 样本，结合 Math-Verify 与 Qwen2.5-72B 做答案校验；在 8 卡昇腾 910B 环境完成 Qwen3-8B 的 LoRA 微调，数学题正确率从 38\% 提升至 62\%。
+  \end{itemize}
+
   \item ICCV 2025 感知测试挑战赛：多项选择题视频问答 \hfill 冠军
   \item WACV 2025 目标距离估计挑战赛 \hfill 冠军
   \item CVPR 2025 少样本目标检测 \hfill 三等奖
-  \item 天翼云息壤杯高校 AI 大模型比赛（华为） \hfill 三等奖
+\end{itemize}
+
+\sectionTitle{专业技能}{\faCogs}
+\begin{itemize}
+  \item \textbf{Agent 开发}: 熟悉 LangGraph 状态图编排（StateGraph、条件路由、ToolNode、Checkpointer），能独立设计带工具调用、多轮循环的 Tool-use Agent；有记忆管理、上下文裁剪、工具安全校验、JSONL 事件审计等工程化实践；熟悉 MCP 协议与技能插件机制，有多模型提供商适配经验。
+  \item \textbf{LLM 应用}: 熟悉 LangChain 工具链与 Prompt 设计，具备 RAG（向量召回 + 重排序）、知识蒸馏、LoRA 微调及 GRPO 强化学习实践经验；了解 vLLM 推理部署。
+  \item \textbf{后端开发}: 熟悉 Python（FastAPI/Django）和 Node.js（Fastify）后端开发，掌握 RESTful API、SSE 流式接口、PostgreSQL/MySQL、Redis、Celery/BullMQ 消息队列及 JWT 认证。
+  \item \textbf{前端开发}: 熟悉 Vue 3 + TypeScript + Vite，了解 React/Next.js；掌握 Element Plus、Pinia、动态路由等工程化实践。
+  \item \textbf{DevOps}: 熟悉 Docker/Docker Compose 容器化部署，掌握 MinIO 对象存储、Prometheus + Grafana 监控体系及 Nginx 反向代理。
 \end{itemize}
 
 \end{document}
