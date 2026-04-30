@@ -155,6 +155,10 @@ xelatex resume-zh.tex
 xelatex resume-zh.tex
 
 latexmk -xelatex resume-zhangzhe.tex
+
+cd /Users/qianlan/work/LLM-Resume-Template
+tectonic resume-zhangzhe.tex
+
 ```
 
 ## 📝 使用指南
