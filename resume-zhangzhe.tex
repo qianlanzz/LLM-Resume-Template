@@ -87,15 +87,14 @@
 \begin{itemize}
   \item \textbf{ICCV 2025 感知测试挑战赛：多项选择题视频问答} \hfill 冠军
   \begin{itemize}
-    \item 针对多项选择题 VideoQA 中细粒度视觉辨别、遮挡推理、视角变换与选项位置偏置问题，基于 Qwen2.5-VL-7B 做指令微调，结合困难题型挖掘与课程学习强化低准确率标签；训练阶段引入选项乱序增强缓解模型记忆选项位置，推理阶段设计题型专用 Prompt、遮挡/视角两阶段推理、TTA 与 GLM-4.5V / Seed-1.6-Vision / Qwen2.5-VL 按题型集成，最终测试集准确率 80.9\%。
+    \item 赛题聚焦 Perception Test 2025 视频问答挑战赛，针对 VideoQA 中细粒度视觉辨别、遮挡推理、视角变换与选项位置偏置问题。基于 Qwen2.5-VL-7B 构建多模态 VideoQA 系统，融合困难样本课程学习、选项乱序增强与多模型按题型集成策略。
   \end{itemize}
 
   \item \textbf{``天翼云息壤杯'' AI 大赛：大语言模型数学推理} \hfill 三等奖
   \begin{itemize}
-    \item 基于 Qwen2.5-Math-72B 蒸馏生成 10 万条 CoT 样本，结合 Math-Verify 与 Qwen2.5-72B 做答案校验；在 8 卡昇腾 910B 环境完成 Qwen3-8B 的 LoRA 微调，数学题正确率从 38\% 提升至 62\%。
+    \item 赛题聚焦于提升模型对复杂数学问题与深度推理的理解与求解能力。针对数学推理任务中长链路推导困难和监督样本质量不足的问题，本方案基于 Qwen3-8B 进行 LoRA 微调，通过“数据蒸馏 + 质量校验 + 参数高效微调”生成 10 万条高质量 CoT 样本，使模型在数学题上的正确率从 38\% 提升至 62\%。
   \end{itemize}
-
-  \item WACV 2025 目标距离估计挑战赛 \hfill 冠军
+    \item WACV 2025 目标距离估计挑战赛 \hfill 冠军
   \item CVPR 2025 少样本目标检测 \hfill 三等奖
 \end{itemize}
 
