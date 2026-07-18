@@ -42,7 +42,7 @@
 \makeheader
 
 \begin{abstract}
-南京理工大学软件工程硕士在读，方向为 LLM Agent 开发与应用。熟悉 LangGraph 状态图编排、MCP 工具协议与 RAG 检索增强，有 Agent 框架开发、工具插件化、记忆管理与审计监控的实践经验。独立开发开源 Agent 框架 AgentBot，主导教辅录题审核系统开发；在 ICCV 2025、天翼云息壤杯等竞赛中有多模态模型微调、推理增强与模型集成实战经验。技术栈覆盖 Python/Node.js 后端、Vue 3 前端及 Docker 容器化部署。
+南京理工大学软件工程硕士在读，主要做 LLM Agent 和 AI 应用工程。独立开发 AgentBot，覆盖 LangGraph 工具调用、长对话记忆、沙盒执行和审计日志；主导教辅录题审核系统，把教材 PDF 解析、OCR 标注、质检和入库串成一套工作流。实习中参与航天领域模型管理平台，负责语义检索、推荐和监控模块；技术栈以 Python/Node.js 后端、Vue 3 前端、Redis/队列和 Docker 部署为主。
 \end{abstract}
 
 \sectionTitle{教育背景}{\faGraduationCap}
@@ -55,10 +55,10 @@
 \begin{itemize}
   \item \textbf{中国电子科技集团公司第二十八研究所（智能模型资源管理平台研发实习）} \hfill 2025.09 -- 至今
   \begin{itemize}
-    \item 参与航天领域 AI 模型全生命周期管理平台开发（Django + Vue 3），负责语义检索、推荐系统、缓存与监控模块。
-    \item 针对模型资源增长后关键词检索召回率下降的问题，基于 Qwen3-Embedding-0.6B + FAISS 构建语义检索服务，支持自然语言任务描述检索模型库；通过 Django Signal 监听元数据变更触发增量索引重建，索引读写采用快照隔离实现无锁并发，持久化通过原子文件替换保证崩溃一致性。
-    \item 实现三路混合推荐引擎（协同过滤 + 内容匹配 + 热度排序），引入 Redis 缓存推荐结果，按用户维度设置 TTL 并通过事件驱动主动失效；写入端采用 Pipeline 批量操作降低 RTT，缓存未命中时由 Celery 异步回填，配合分布式锁防止并发穿透。
-    \item 基于 DBSCAN 聚类对系统 CPU、内存、磁盘、网络、请求延迟 5 维指标进行异常检测，识别偏离正常模式的异常时段；结合线性回归对资源用量做趋势外推，在容量触达阈值前生成预警工单，为运维预留扩容窗口。
+    \item 参与航天领域 AI 模型全生命周期管理平台开发，项目覆盖模型、算法、数据集、镜像和部署监控等功能。
+    \item 基于 Qwen3-Embedding-0.6B + FAISS 实现语义检索；将模型名称、分类、描述、关联数据集和版本说明拼成检索文档，支持用自然语言任务描述召回候选模型。
+    \item 实现模型资源推荐模块，将用户历史行为、资源类型偏好和近期热度合并排序；对高频推荐结果做用户级 Redis 缓存，减少重复计算和接口抖动。
+    \item 补充系统运行监控和智能分析能力，基于 psutil 采集 CPU、内存、磁盘、网络等指标，用 DBSCAN 标出异常时段，并用线性回归给出 7 天资源趋势，辅助运维提前发现容量风险。
   \end{itemize}
 \end{itemize}
 
@@ -66,20 +66,19 @@
 \begin{itemize}
   \item \textbf{AgentBot · 大模型智能体工具} \hfill 2025.10 -- 至今
   \begin{itemize}
-    \item 基于 LangGraph StateGraph 搭建的 CLI Agent，核心是 agent $\leftrightarrow$ tools 循环工作流，支持多轮工具调用与条件路由；通过统一的 Provider 工厂适配 OpenAI / Anthropic / 阿里云等 6 家模型 API，运行时可热切换。
-    \item 记忆分两层：长期记忆用 Markdown 文件存用户偏好，LLM 通过 Tool Call 自己决定什么时候更新，跨会话保留；短期记忆基于 SQLite Checkpointer 存完整对话，按回合切分，超 40 轮后自动让 LLM 把旧对话压缩成摘要再裁掉原文，长对话 Token 用量降低约 60\%。
-    \item 内置 12 个工具（时间、计算器、任务调度、文件读写、Shell 执行等），工具调用走 LangChain @tool 标准接口；文件和 Shell 操作限制在沙盒目录内，通过路径前缀校验拦截穿越，正则匹配拦截 rm -rf 等危险命令，Shell 执行设 60s 超时。
-    \item 内置知识库子智能体（WikiAgent），支持自动摄入 PDF / URL / 文章并提取实体与交叉引用，写入结构化 Markdown Wiki；设计摄入、查询、健康检查三个专用子智能体分工协作，健康检查可扫描死链、孤立页面与矛盾内容并自动修复；知识库以标准 Markdown 存储，兼容 Obsidian 图谱可视化，支持 OpenAI 兼容的多种 LLM 后端。
-    \item 所有 LLM 输入、工具调用、工具返回、AI 回复、系统动作共 5 类事件写入 JSONL 审计日志（单例 + 内存队列 + 守护线程异步落盘），配套 Rich 终端可实时查看 Agent 每一步的决策过程。
+    \item 用 LangGraph StateGraph 实现 CLI Agent 主循环，将 LLM 决策节点和 ToolNode 显式拆开，通过条件边判断是否继续调用工具；Provider 层统一适配 OpenAI、Anthropic、阿里云及 OpenAI 兼容接口，运行时可切换模型。
+    \item 设计两层记忆：长期记忆用 Markdown 保存用户偏好，由 LLM 通过工具调用主动更新；短期对话通过 SQLite Checkpointer 按 thread 保存，超过 40 轮后压缩旧上下文并保留最近 10 轮，长对话 Token 用量降低约 60\%。
+    \item 内置时间、计算器、任务调度、文件读写、Shell 等 12 个工具，统一走 LangChain @tool 接口；文件和 Shell 操作限定在沙盒目录内，路径解析后做前缀校验，并拦截高风险命令和超时进程，减少 LLM 误操作。
+    \item 开发 WikiAgent 子智能体，支持摄入 PDF、URL 和文章，抽取实体、交叉引用并写入 Markdown 知识库；按摄入、查询、健康检查拆分职责，可扫描死链、孤立页面和矛盾内容，知识库可直接用 Obsidian 查看关系图。
+    \item 为 Agent 执行过程增加 JSONL 审计日志，记录模型输入、工具调用、工具返回、最终回复和系统动作；配合 Rich 终端输出，可回放一次任务的完整决策链，定位工具参数错误和上下文污染问题。
   \end{itemize}
 
   \item \textbf{教辅录题审核一体化系统} \hfill 2025.06 -- 至今
   \begin{itemize}
-    \item 原有教辅录题依赖 Excel + 多工具协作，流程碎片化、效率低，需要一套打通上传、录题、质检、入库全链路的一体化系统。
-    \item 基于 Vue 3 + TypeScript、Fastify + Prisma + PostgreSQL + Redis 开发录题工作台及后端服务，支持 PDF 双栏浏览、框选 OCR、公式渲染、草稿自动保存，打通教材上传到结果入库的完整链路。
-    \item 主导自动切题模块，基于 MinerU 的块级坐标解析与目录分段能力将教材 PDF 转换为结构化内容，结合大模型完成题号、题干、选项、答案、解析抽取，基于``章节标题 + 题号''实现题答配对，生成标注结果回写工作台。
-    \item 基于 BullMQ 承接 PDF 拆页、MinerU 解析与自动切题等长任务，避免重任务阻塞工作台；补充队列监控告警、草稿缓存与历史恢复、提交前校验等机制。
-    \item 设计并落地 Prometheus + Grafana 监控链路，开发 ops-monitor 服务补充 HTTP 请求耗时、队列积压、任务等待/执行时长 P95、Worker 心跳与离线状态等自定义指标；配置 API P95、Worker 离线、机器高 CPU 等告警规则，提升长任务链路的可观测性与异常发现效率。
+    \item 面向教辅录题从 Excel、多工具协作迁移到统一平台的需求，基于 Vue 3 + TypeScript、Fastify + Prisma + PostgreSQL + Redis 开发录题工作台和后端服务，覆盖教材上传、PDF 浏览、框选 OCR、人工校对、质检和入库。
+    \item 开发自动切题工作流模块，利用 MinerU 输出的块级坐标和目录结构解析教材 PDF，再用大模型抽取题号、题干、选项、答案和解析；通过``章节标题 + 题号''做题答配对，解决题目页和答案页分离的问题。
+    \item 基于 BullMQ 承接 PDF 拆页、MinerU 解析、OCR 调用和自动切题等长任务，接口只返回 jobId，Worker 异步消费；前端通过 SSE 获取处理进度，避免几分钟级任务阻塞 HTTP 请求。
+    \item 开发 ops-monitor 服务接入 Prometheus + Grafana，补充 API 延迟、队列积压、任务等待/执行时长 P95、Worker 心跳等指标，并配置 Worker 离线、API P95 超阈值和机器高 CPU 告警。
   \end{itemize}
 \end{itemize}
 
@@ -87,24 +86,23 @@
 \begin{itemize}
   \item \textbf{ICCV 2025 感知测试挑战赛：多项选择题视频问答} \hfill 冠军
   \begin{itemize}
-    \item 赛题聚焦 Perception Test 2025 视频问答挑战赛，针对 VideoQA 中细粒度视觉辨别、遮挡推理、视角变换与选项位置偏置问题。基于 Qwen2.5-VL-7B 构建多模态 VideoQA 系统，融合困难样本课程学习、选项乱序增强与多模型按题型集成策略。
+    \item 基于 Qwen2.5-VL-7B 做视频问答指令微调，针对细粒度视觉辨别、遮挡推理和选项位置偏置设计困难题型挖掘、课程学习和选项乱序增强；推理阶段结合题型专用 Prompt、TTA 与多模型按题型集成，最终测试集准确率 80.9\%。
   \end{itemize}
 
   \item \textbf{``天翼云息壤杯'' AI 大赛：大语言模型数学推理} \hfill 三等奖
   \begin{itemize}
-    \item 赛题聚焦于提升模型对复杂数学问题与深度推理的理解与求解能力。针对数学推理任务中长链路推导困难和监督样本质量不足的问题，本方案基于 Qwen3-8B 进行 LoRA 微调，通过“数据蒸馏 + 质量校验 + 参数高效微调”生成 10 万条高质量 CoT 样本，使模型在数学题上的正确率从 38\% 提升至 62\%。
+    \item 基于 Qwen2.5-Math-72B 蒸馏生成 10 万条 CoT 样本，并用 Math-Verify 与 Qwen2.5-72B 做答案校验；在 8 卡昇腾 910B 环境对 Qwen3-8B 做 LoRA 微调，使数学题正确率从 38\% 提升至 62\%。
   \end{itemize}
-    \item WACV 2025 目标距离估计挑战赛 \hfill 冠军
+  \item WACV 2025 目标距离估计挑战赛 \hfill 冠军
   \item CVPR 2025 少样本目标检测 \hfill 三等奖
 \end{itemize}
 
 \sectionTitle{专业技能}{\faCogs}
 \begin{itemize}
-  \item \textbf{Agent 开发}: 熟悉 LangGraph 状态图编排（StateGraph、条件路由、ToolNode、Checkpointer），能独立设计带工具调用、多轮循环的 Tool-use Agent；有记忆管理、上下文裁剪、工具安全校验、JSONL 事件审计等工程化实践；熟悉 MCP 协议与技能插件机制，有多模型提供商适配经验。
-  \item \textbf{LLM 应用}: 熟悉 LangChain 工具链与 Prompt 设计，具备 RAG（向量召回 + 重排序）、知识蒸馏、LoRA 微调及 GRPO 强化学习实践经验；了解 vLLM 推理部署。
-  \item \textbf{后端开发}: 熟悉 Python（FastAPI/Django）和 Node.js（Fastify）后端开发，掌握 RESTful API、SSE 流式接口、PostgreSQL/MySQL、Redis、Celery/BullMQ 消息队列及 JWT 认证。
-  \item \textbf{前端开发}: 熟悉 Vue 3 + TypeScript + Vite，了解 React/Next.js；掌握 Element Plus、Pinia、动态路由等工程化实践。
-  \item \textbf{DevOps}: 熟悉 Docker/Docker Compose 容器化部署，掌握 MinIO 对象存储、Prometheus + Grafana 监控体系及 Nginx 反向代理。
+  \item \textbf{Agent / LLM}: LangGraph、LangChain Tool、MCP、RAG、长上下文压缩、工具安全、JSONL 审计、LoRA 微调、知识蒸馏、vLLM 推理部署。
+  \item \textbf{后端}: Python（FastAPI / Django）、Node.js（Fastify）、RESTful API、SSE、PostgreSQL / MySQL、Redis、Celery / BullMQ、JWT。
+  \item \textbf{前端}: Vue 3、TypeScript、Vite、Element Plus、Pinia、动态路由；了解 React / Next.js。
+  \item \textbf{工程化}: Docker / Docker Compose、MinIO、Prometheus + Grafana、Nginx、Linux 常用部署与排障。
 \end{itemize}
 
 \end{document}
