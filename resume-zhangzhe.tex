@@ -42,7 +42,7 @@
 \makeheader
 
 \begin{abstract}
-南京理工大学软件工程硕士在读，主要做 LLM Agent 和 AI 应用工程。参与 JF-AIX 企业级 Agent 平台研发，负责 Agent Runtime 上下文工程，落地会话级文档记忆、跨会话长期记忆与产品数据闭环；主导教辅录题审核系统，把教材 PDF 解析、OCR 标注、质检和入库串成一套工作流。实习中参与航天领域模型管理平台，负责语义检索、推荐和监控模块。
+南京理工大学软件工程硕士在读，主要做 LLM Agent 和 AI 应用工程。参与 JF-AIX 企业级 Agent 平台研发，负责 Agent Runtime 上下文工程，落地会话级文档记忆、跨会话长期记忆与产品数据闭环；独立设计并实现 Agentic 教辅内容生产平台，将教材 PDF 解析、结构化切题、多模态质检、人工裁决和安全落库串成完整生产链路。实习中参与航天领域模型管理平台，负责语义检索、推荐和监控模块。
 \end{abstract}
 
 \sectionTitle{教育背景}{\faGraduationCap}
@@ -70,14 +70,15 @@
   \end{itemize}
 \end{itemize}
 
+\newpage
 \sectionTitle{项目经历}{\faCode}
 \begin{itemize}
-  \item \textbf{教辅录题审核一体化系统} \hfill 2026.02 -- 至今
+  \item \textbf{Agentic 教辅内容生产平台（智能切题 $\cdot$ 多模态质检 $\cdot$ Human-in-the-loop）} \hfill 2026.02 -- 至今
   \begin{itemize}
-    \item 面向教辅录题从 Excel、多工具协作迁移到统一平台的需求，基于 Vue 3 + TypeScript、Fastify + Prisma + PostgreSQL + Redis 开发录题工作台和后端服务，覆盖教材上传、PDF 浏览、框选 OCR、人工校对、质检和入库。
-    \item 开发自动切题工作流模块，利用 MinerU 输出的块级坐标和目录结构解析教材 PDF，再用大模型抽取题号、题干、选项、答案和解析；通过``章节标题 + 题号''做题答配对，解决题目页和答案页分离的问题。
-    \item 基于 BullMQ 承接 PDF 拆页、MinerU 解析、OCR 调用和自动切题等长任务，接口只返回 jobId，Worker 异步消费；前端通过 SSE 获取处理进度，避免几分钟级任务阻塞 HTTP 请求。
-    \item 开发 ops-monitor 服务接入 Prometheus + Grafana，补充 API 延迟、队列积压、任务等待/执行时长 P95、Worker 心跳等指标，并配置 Worker 离线、API P95 超阈值和机器高 CPU 告警。
+    \item 面向教辅录题场景独立设计并实现 Agent 工作流，将教材 PDF 解析、结构化切题、AI 质检、人工裁决、安全落库串成完整生产链路，把传统人工录题升级为``Agent 生成 + AI 复核 + 人工兜底''；平台累计承载 6,862 本教材、72.9 万页 PDF、125.2 万道题目，其中 6,219 本完成抽检、3,081 本完成正式入库。技术栈：Vue 3 / Fastify / PostgreSQL / Redis / BullMQ / MinerU / 火山方舟。
+    \item \textbf{Detector $\rightarrow$ Verifier $\rightarrow$ Executor 多阶段质检 Agent}: Detector 使用文本模型批量扫描 OCR 与题目内容，输出包含问题位置、原文、修改建议及可修复性的结构化问题单；Verifier 调用多模态视觉模型，对照 MinerU 坐标实时裁剪的 PDF 原图逐条复核，过滤缺乏原图依据的文本幻觉；Executor 在写回前执行原文唯一定位、内容哈希及稿件版本校验，仅允许通过校验的问题自动修复，其余降级人工处理，并与 revision / 编辑锁联动形成 Human-in-the-loop 闭环。AI 质检上线后已覆盖 80 本教材、14.4 万道题，发现约 1.5 万条问题；质检后内容准确率由约 95\% 提升至 98\%，单本教材平均抽检耗时由 40 min 降至 18 min，降低约 55\%。
+    \item \textbf{Grounding 驱动的文档结构化抽取}: 切题 Agent 不直接生成或改写题目正文，而是消费 MinerU 带 ID 的版面块，通过自定义结构化协议输出题号、题干、选项、答案、解析对源块 ID 的引用，再由服务端回填原始文本与坐标，使每个字段均可追溯至 PDF 原始区域；结合目录路径、邻近章节与页面归属约束处理跨页、双栏及章节边界场景，题目页与答案页分离时通过``目录范围 + 题号''完成跨页题答配对，并采用``归属不确定则宁可漏提''的策略降低跨目录误切与重复切题。目前 MinerU 版面解析已稳定处理 2,225 本教材、29.7 万页 PDF。
+    \item \textbf{可恢复、可审计的 LLM Workflow Runtime}: 基于 BullMQ 统一编排 PDF 拆页、MinerU 解析、自动切题、OCR 与 AI 质检等分钟级任务，接口即时返回 \texttt{jobId}，由 Worker 异步消费，并以批次 checkpoint 实现失败断点续跑，已成功批次自动跳过，避免重复执行和重复计费；通过输入内容哈希 + Prompt 版本进行幂等去重，结合 Redis 锁防止并发重复发起。累计支撑 464 万次 OCR 调用、126 亿 Tokens；记录每次调用的模型、Token、费用及 \texttt{rawResponse}，并通过 Prometheus + Grafana 监控任务 P95、队列积压与 Worker 心跳，实现模型调用成本、任务执行链路及运行状态可观测。
   \end{itemize}
 \end{itemize}
 
