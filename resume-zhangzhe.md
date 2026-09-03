@@ -5,7 +5,7 @@
 - 学校：南京理工大学
 - 学历：软件工程 · 硕士在读
 
-**关键词**：Agent 框架, LangGraph, MCP, Tool-use, RAG, Memory, 智能运维, Django, Vue3
+**关键词**：Agent Runtime, Agent Loop, Tool-use, MCP, RAG, 上下文工程, 长短期记忆, 多模态模型, Human-in-the-loop, Vue3, Fastify, BullMQ, MinerU
 
 ---
 
@@ -58,7 +58,7 @@
 
 ## 专业技能
 
-- **Agent / LLM**：LangGraph、LangChain Tool、MCP、RAG、长上下文压缩、工具安全、JSONL 审计、LoRA 微调、知识蒸馏、vLLM 推理部署。
-- **后端**：Python（FastAPI / Django）、Node.js（Fastify）、RESTful API、SSE、PostgreSQL / MySQL、Redis、Celery / BullMQ、JWT。
-- **前端**：Vue 3、TypeScript、Vite、Element Plus、Pinia、动态路由；了解 React / Next.js。
+- **Agent / LLM**：Agent Runtime、Agent Loop、Tool-use、MCP、ReAct、RAG、上下文工程、长短期记忆、Prompt 设计、LoRA 微调、vLLM 推理部署。
+- **后端**：Python（FastAPI / Django）、Node.js（Fastify / NestJS）、RESTful API、异步编程、SSE / WebSocket、PostgreSQL / MySQL、Redis、Celery / BullMQ、JWT。
+- **前端**：Vue 3、TypeScript、Vite、Vue Router、Pinia、Element Plus / Ant Design Vue、组件化开发、状态管理、动态路由、SSE / WebSocket 实时通信。
 - **工程化**：Docker / Docker Compose、MinIO、Prometheus + Grafana、Nginx、Linux 常用部署与排障。
