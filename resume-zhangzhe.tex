@@ -61,7 +61,7 @@
     \item 补充系统运行监控和智能分析能力，基于 psutil 采集 CPU、内存、磁盘、网络等指标，用 DBSCAN 标出异常时段，并用线性回归给出 7 天资源趋势，辅助运维提前发现容量风险。
   \end{itemize}
 
-  \item \textbf{九方智投（JF-AIX 企业级 Agent 数字员工平台研发）} \hfill 2026.05 -- 至今
+  \item \textbf{九方智投（JF-AIX 企业级 Agent 数字员工平台研发）} \hfill 2026.05 -- 2026.08
   \begin{itemize}
     \item \textbf{Agent Runtime 与端云协同}: 参与构建 Electron + Vue 3 端侧执行域与 NestJS 云侧控制面，基于 Pi Agent SDK 接管自定义 Agent Loop，完善 Tool 循环熔断、参数校验、输出截断续写、Abort 中断及流式事件分发机制，将模型推理、Tool/Skill 执行、人工确认与结果持久化串联为可观测、可中断、可恢复的执行闭环。
     \item \textbf{会话级多模态文件记忆}: 面向会话内少量小型文档、图片及表格附件，设计``首轮原始内容注入 $\rightarrow$ 异步摘要与图片描述 $\rightarrow$ 后续摘要引用 $\rightarrow$ 精确信息按需回读''链路；通过 Renderer 会话状态、Electron 本机缓存与 Server Metadata 三级分层管理文件内容和引用，在不引入向量库及文档分块的情况下，实现文件跨轮持续使用和应用重启恢复；基于模型上下文容量动态分配多文件内容预算，并通过 \texttt{documentId + hash} 校验、原子写入及 Draft Session 迁移保障缓存一致性，降低多轮重复传输正文与图片数据带来的 Token 和通信开销。
