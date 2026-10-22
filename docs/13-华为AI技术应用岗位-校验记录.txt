@@ -1,0 +1,12 @@
+ARTIFACT: /Users/qianlan/work/LLM-Resume-Template/docs/13-华为AI技术应用岗位-简历深挖与完整备考.md
+SHA256: 34242d510beee1d8ce31e7781c9c724402fc7067fb231500e0dda3b606238ef4
+STRUCTURE: 120 sequential main questions; 125 answered follow-ups; 12 supplementary questions.
+EXECUTION: extracted all five Python code blocks from the document and executed them; SQL block executed using SQLite 3.53.4.
+PASS | merge_intervals | overlap, nesting, touching, empty, source unchanged
+PASS | lru_cache | hits, eviction order, update, zero capacity, invalid capacity
+PASS | bounded_map | 20 results ordered, observed peak=3, empty, invalid limit, exception cleanup, parent cancellation
+PASS | sliding_window | capacity, rejection, exact expiry boundary, invalid arguments
+PASS | topological_sort | dependency order, disconnected node, empty, duplicate edge, cycle
+PASS | optimistic_update | SQLite in-memory: first update -> version 2; stale retry, wrong tenant, wrong hash -> 0 rows; content preserved
+LIMIT: SQL conditional update behavior verified using SQLite, not a live PostgreSQL instance. Production database configuration, remote systems, resume claims and quantitative results were not independently verified.
+EXIT_STATUS: 0

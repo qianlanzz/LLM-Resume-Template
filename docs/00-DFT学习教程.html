@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="从对话重写的完整 DFT 教程：RTL 与时序、SCAN、ATPG、Tessent、MBIST 与可运行实验。">
+<link rel="icon" href="data:,"><title>DFT 图解学习教程 · 从电路原理到测试实验</title><style>
+    :root{color-scheme:light;--ink:#17212b;--muted:#53616f;--paper:#f7f8f6;--white:#fff;--line:#dce2df;--blue:#2463eb;--blue-soft:#e9efff;--green:#13795b;--green-soft:#e2f5ed;--orange:#bc5b14;--orange-soft:#fff0db;--red:#b33c37;--red-soft:#fae8e5;--purple:#6b4bb8;--shadow:0 14px 40px #1f29330c}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.68 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,a{font:inherit}a{color:#1d56cb;text-decoration-thickness:1px;text-underline-offset:3px}a:hover{color:#123d98}.shell{max-width:1240px;margin:auto;padding:28px 30px 64px;display:grid;grid-template-columns:228px minmax(0,1fr);gap:48px}.rail{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;padding:4px 0}.brand{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--muted);margin:0 0 22px}.rail nav{display:grid;gap:4px}.rail a{padding:8px 11px;border-radius:5px;color:#46515b;text-decoration:none;font-size:14px}.rail a:hover,.rail a.active{background:var(--blue-soft);color:#174ac0}.rail .source-links{border-top:1px solid var(--line);margin-top:18px;padding-top:13px}.rail .source-links a{font-size:12px;padding:5px 11px}.main{min-width:0}.hero{padding:26px 0 32px;border-bottom:1px solid var(--line)}.eyebrow{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.08em}.hero h1{max-width:760px;margin:7px 0 12px;font-size:clamp(30px,4vw,44px);line-height:1.18;letter-spacing:0}.hero p{max-width:700px;color:var(--muted);font-size:18px;margin:0}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.chip{border:1px solid var(--line);background:var(--white);border-radius:4px;padding:3px 9px;font-size:12px;color:#45515a}.progressline{display:flex;align-items:center;gap:12px;margin-top:26px;color:var(--muted);font-size:13px}.track{height:5px;flex:1;background:#e5e9e7;border-radius:4px;overflow:hidden}.track span{display:block;width:0;height:100%;background:var(--blue);transition:width .25s}.lesson{padding:34px 0;border-bottom:1px solid var(--line)}.lesson h2{font-size:25px;line-height:1.3;margin:0 0 10px;letter-spacing:0}.lesson h3{font-size:18px;line-height:1.4;margin:23px 0 7px;letter-spacing:0}.lesson p{margin:8px 0;color:#33404b}.lead{font-size:18px;color:#35414d}.muted{color:var(--muted)!important}.callout{margin:17px 0;padding:13px 16px;border-left:3px solid var(--blue);background:var(--blue-soft);color:#253957}.callout.orange{border-color:var(--orange);background:var(--orange-soft)}.callout.green{border-color:var(--green);background:var(--green-soft)}.compare{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:20px 0}.compare>div{padding:0 15px;border-left:2px solid var(--line)}.compare strong{display:block}.visual{margin:22px 0 12px}.visual svg{display:block;width:100%;height:auto;overflow:visible}.visual figcaption{font-size:13px;color:var(--muted);margin-top:6px}.wave-text{font-size:13px;fill:var(--ink)}.signal{fill:none;stroke-width:3;stroke-linejoin:round;stroke-linecap:square}.sig-se{stroke:var(--orange)}.sig-clk{stroke:var(--blue)}.sig-data{stroke:var(--green)}.sig-response{stroke:var(--purple)}.wire{stroke:#aab4b8;stroke-width:1.5;fill:none}.edge-line{stroke:var(--orange);stroke-width:1.5;stroke-dasharray:5 5}.step-dot{fill:var(--white);stroke:var(--orange);stroke-width:2}.control-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.control-row button,.toggle{border:1px solid #bec8c5;background:var(--white);color:var(--ink);border-radius:4px;padding:7px 12px;font-weight:600;cursor:pointer}.control-row button:hover,.toggle:hover{background:#eef1ef}.control-row button:focus-visible,.toggle:focus-visible,a:focus-visible{outline:3px solid #8caaff;outline-offset:2px}.control-row .primary{border-color:var(--blue);background:var(--blue);color:#fff}.status{font-size:14px;color:var(--muted);margin-left:4px}.segmented{display:inline-flex;gap:3px;background:#e9edeb;padding:3px;border-radius:5px}.segmented button{border:0;background:transparent;border-radius:3px;padding:6px 12px;color:#47535c;cursor:pointer}.segmented button[aria-pressed=true]{background:white;color:var(--ink);box-shadow:0 1px 3px #0002}.lesson-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:18px 0}.lesson-grid section{padding:13px 0;border-top:2px solid var(--line)}.lesson-grid section:nth-child(1){border-color:var(--blue)}.lesson-grid section:nth-child(2){border-color:var(--orange)}.lesson-grid section:nth-child(3){border-color:var(--green)}.lesson-grid h3{margin:5px 0}.lesson-grid p{font-size:14px;margin:3px 0}.sequence{counter-reset:seq;display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:18px 0}.sequence div{counter-increment:seq;border-top:2px solid var(--line);padding:10px 11px 0 0;position:relative}.sequence div:before{content:counter(seq,decimal-leading-zero);font-size:12px;font-weight:700;color:var(--blue)}.sequence strong{display:block;font-size:14px}.sequence span{display:block;color:var(--muted);font-size:13px}.fact{font-variant-numeric:tabular-nums;font-weight:700;color:#1346ad}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;background:#eef1ef;border-radius:3px;padding:2px 5px;white-space:nowrap}.resource-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 22px;margin:14px 0}.resource-list a{display:block;padding:9px 0;border-bottom:1px solid var(--line);font-weight:600}.resource-list span{display:block;color:var(--muted);font-size:13px;font-weight:400}.footer{padding:26px 0;color:var(--muted);font-size:13px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:820px){.shell{grid-template-columns:1fr;gap:14px;padding:18px 20px 44px}.rail{position:relative;top:auto;max-height:none;border-bottom:1px solid var(--line);padding:0 0 8px}.brand{margin:0 0 7px}.rail nav{display:flex;overflow:auto;white-space:nowrap}.rail nav a{flex:none}.rail .source-links{display:none}.hero{padding-top:17px}}
+    @media(max-width:540px){body{font-size:15px}.shell{padding:12px 16px 34px}.hero p{font-size:16px}.lesson{padding:27px 0}.lesson h2{font-size:22px}.compare{grid-template-columns:1fr;gap:4px}.lesson-grid{grid-template-columns:1fr;gap:7px}.sequence{grid-template-columns:1fr 1fr;row-gap:13px}.resource-list{grid-template-columns:1fr}.status{width:100%;margin-left:0}.rail nav a{font-size:13px;padding:6px 9px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+  
+main .lesson h2{margin-bottom:17px} .rail{max-height:calc(100vh - 48px)}
+.rail a{padding:5px 9px;font-size:13px} .rail .brand{margin-bottom:12px}
+.demo{padding:18px;background:#fff;border:1px solid var(--line);border-radius:5px;margin:20px 0}
+.demo h3{margin-top:0}.demo svg{display:block;width:100%;height:auto;margin:17px 0 8px}
+.demo svg text{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.demo .status{margin:9px 0}.caption{font-size:13px;color:var(--muted);margin:8px 0}
+.inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px}.inputs label{display:grid;gap:5px;font-size:14px}
+input,select{font:inherit;color:var(--ink);background:#fff;border:1px solid #bfc9c6;border-radius:4px;padding:6px 8px;max-width:100%;min-width:0}
+.control-row label{display:flex;align-items:center;gap:5px;font-size:14px}
+pre{background:#eef1ef;border:1px solid var(--line);padding:15px 18px;overflow:auto;font-size:13px;line-height:1.65;border-radius:4px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em}pre code{font-size:inherit}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:18px 0;table-layout:fixed}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);overflow-wrap:anywhere;vertical-align:top}
+th{background:#edf1ef;font-weight:600}details{border-bottom:1px solid var(--line);padding:12px 0}
+summary{cursor:pointer;font-weight:600}.demo button[aria-pressed=true]{background:var(--blue-soft);color:#174ac0}
+@media(max-width:540px){.demo{padding:12px}.inputs{grid-template-columns:1fr}.rail a{font-size:12px;padding:5px 8px}table{font-size:13px}th,td{padding:7px 5px}.control-row button{padding:8px 10px}pre{padding:12px}}
+@media print{.shell{display:block;padding:0}.rail,.control-row button,[data-download],.inputs{display:none}.hero{padding:0 0 20px}.lesson{break-inside:auto}.demo{break-inside:avoid}pre{white-space:pre-wrap;overflow:visible}a{color:inherit}.lesson h2{break-after:avoid}}
+</style></head>
+<body><div class="shell"><aside class="rail" aria-label="章节导航"><p class="brand">DFT · 图解学习教程</p><nav><a href="#map">01　学习路线与知识地图</a>
+<a href="#rtl">02　RTL、仿真、波形与综合</a>
+<a href="#timing-base">03　触发器、时序与 CDC</a>
+<a href="#control">04　可控性与可观测性</a>
+<a href="#scan-ff">05　Scan FF 与模式选择</a>
+<a href="#shift">06　扫描链逐沿移位</a>
+<a href="#capture">07　Shift / Capture 完整过程</a>
+<a href="#atpg">08　ATPG：激活、传播、观察</a>
+<a href="#transition">09　Transition、LOC 与 LOS</a>
+<a href="#test-time">10　测试时间与链均衡</a>
+<a href="#compression">11　压缩、X 与跨域移位</a>
+<a href="#shell">12　Tessent 工作流与脚本</a>
+<a href="#debug">13　DRC 与报告 Debug</a>
+<a href="#coverage">14　故障分类与覆盖率</a>
+<a href="#sram">15　SRAM 与 MBIST 架构</a>
+<a href="#march">16　March C−：40 步读写实验</a>
+<a href="#memory-time">17　MBIST 时间、算法与修复</a>
+<a href="#lbist">18　LBIST、MISR 与测试访问</a>
+<a href="#lab">19　可运行的 Verilog 实验</a>
+<a href="#review">20　面试自检与进一步阅读</a>
+</nav></aside><main class="main">
+<header class="hero"><div class="eyebrow">从电路原理到测试实验</div><h1>看懂电路如何测试，<br>也能动手验证每一步。</h1>
+<p>沿着 RTL → 扫描链 → 故障检测 → 存储器测试，读完整讲解、操作动画、手算例子，再运行同一个两寄存器实验。</p>
+<div class="chips"><span class="chip">20 章循序讲解</span><span class="chip">7 个交互图解</span><span class="chip">2 个计算练习</span><span class="chip">完整 Verilog 实验</span></div>
+<div class="progressline"><span id="read-count">阅读位置 0 / 20</span><span class="track"><span id="read-progress"></span></span></div></header>
+<section class="lesson" id="map" data-title="学习路线与知识地图">
+<h2>01　从一个坏门，理解整条测试链路</h2>
+<p class="lead">先想象：芯片已经制造出来，深处有一个 AND 门的输出坏了。你能给它输入什么，又从哪里看到错误？</p>
+<p>芯片内部通常有大量触发器和组合逻辑，但外部引脚有限。正常功能输入只能间接改变内部状态，功能输出也不会直接显示每个寄存器里的值。即使系统能启动，某些制造缺陷也可能一直没有被触发。</p>
+<p>可测试性设计（DFT）在设计阶段加入测试访问与控制结构，让外部设备或片上控制器能够施加激励、执行测试、观察响应。它帮助检测制造缺陷；它不能代替功能验证，也不是给芯片添加另一项用户功能。</p>
+<div class="sequence"><div><strong>RTL 与时序</strong><span>先看懂寄存器如何保存与更新数据。</span></div><div><strong>SCAN 与 ATPG</strong><span>控制内部状态，计算能检出故障的向量。</span></div><div><strong>MBIST 与 March</strong><span>按地址、数据和顺序检查存储阵列。</span></div><div><strong>工具与 Debug</strong><span>理解输入、前置条件、报告和失败原因。</span></div></div>
+<p>这套教程沿用对话中的学习顺序：电路结构 → 动态过程 → 故障检测 → 工程流程 → 动手实验。先用小电路把因果讲清，再把同样的思路放到大型设计和工具报告里。</p>
+<div class="callout">读完时，应能自己画出扫描触发器和扫描链，解释 Shift/Capture，手算一个 ATPG 向量，执行 March C− 的读写顺序，并根据报告提出下一步排查方法。</div>
+</section>
+
+<section class="lesson" id="rtl" data-title="RTL、仿真、波形与综合">
+<h2>02　RTL 不是软件：代码背后是一组同时工作的电路</h2>
+<p>RTL 是 Register Transfer Level，寄存器传输级。它描述数据在寄存器之间怎样流动，以及途中做哪些组合运算。下面这段代码对应一个 AND 门和一个 D 触发器：</p>
+<pre><code>always @(posedge clk)
+    y &lt;= a &amp; b;</code></pre>
+<p>AND 门计算 <code>D=a∧b</code>，其输出会随输入变化；寄存器 <code>Q=y</code> 只在时钟上升沿采样 D，其他时间保存原值。这就是组合逻辑与时序逻辑最直观的区别。</p>
+<div class="demo"><h3>波形实验：D 变化了，Q 会立刻跟着变吗？</h3><div class="control-row"><label>A <select id="rtl-a"><option>0</option><option>1</option></select></label><label>B <select id="rtl-b"><option>0</option><option>1</option></select></label><button id="rtl-step" class="primary">推进半个周期</button><button id="rtl-reset">重置</button></div><svg id="rtl-svg" role="img" aria-label="RTL 组合逻辑 D 与寄存器 Q 的离散波形演示"></svg><p id="rtl-status" class="status" aria-live="polite"></p><p class="caption">选择 A=B=1，再推进到上升沿；随后改 B=0，观察 D 立即改变而 Q 等待下一上升沿。离散演示不模拟真实传播延迟、setup/hold 违例或亚稳态。</p></div>
+<h3>仿真、波形调试、综合各自回答什么？</h3>
+<table><thead><tr><th>环节</th><th>实际做的事</th><th>得到什么</th></tr></thead><tbody><tr><td>RTL 仿真</td><td>Testbench 给 DUT 时钟、复位和刺激；仿真器计算逻辑行为。</td><td>输出、断言结果、VCD 等波形。</td></tr><tr><td>波形调试</td><td>检查错误第一次出现在哪里、在什么时钟沿出现。</td><td>能追溯到输入、状态或控制的根因。</td></tr><tr><td>逻辑综合</td><td>优化逻辑，再按工艺库与面积/时序约束映射标准单元。</td><td>门级网表及面积、时序等报告。</td></tr></tbody></table>
+<p>例如 <code>y=(a&amp;b)|(a&amp;~b)</code> 在二值布尔逻辑下等于 <code>a</code>。综合不必机械地保留两个 AND 和一个 OR；它可以消掉冗余，再按实际电气需求插缓冲或映射其他单元。RTL 仿真与综合后网表的用途不同，RTL 中的 X/Z 和真实硬件行为也不能简单等同。</p>
+<p>调波形时建议按顺序查：时钟是否正常 → 复位是否正确释放 → 输入是否在预期时刻变化 → 寄存器是否在正确沿更新 → 输出是否符合期望。RTL 波形中的 X 表示未知，不是对晶体管级亚稳态的真实模拟。</p>
+</section>
+
+<section class="lesson" id="timing-base" data-title="触发器、时序与 CDC">
+<h2>03　数据不仅要对，还要在正确的时间到达</h2>
+<p>触发器是边沿采样，锁存器在使能窗口内透明。不要因为 Scan FF 前面有 MUX，就把它误认为“扫描模式下数据会直接穿过去”：它仍需要时钟有效沿才能更新。</p>
+<p><strong>Setup</strong> 要求数据在采样沿之前稳定足够久；<strong>Hold</strong> 要求采样沿之后继续稳定足够久。违例可能产生错误采样或亚稳态，不能保证只会采到某个确定的旧值或新值。</p>
+<pre><code># 约定 skew = 捕获时钟到达时间 − 发射时钟到达时间
+Setup: tCQ_max + tDATA_max + tSETUP ≤ T + skew
+Hold : tCQ_min + tDATA_min ≥ tHOLD + skew</code></pre>
+<p>这是忽略时钟不确定度等因素的简化同频寄存器路径模型。正 skew 给 setup 更多时间，却让 hold 更难满足。Setup 检查的是最慢数据路径，hold 检查的是最快路径，不能把两者用同一个延迟值代入。</p>
+<p>降频增加周期 T，可能缓解 setup 问题；hold 比较的是同一次发射/采样附近的最短时间关系，式子里没有 T，因此通常靠数据延迟或时钟树等措施处理，不能指望降频修好。</p>
+<h3>为什么 DFT 要重新查时序？</h3>
+<p>Shift 使用 SI 路径，Capture 使用功能 D 路径，时钟来源和控制条件也可能不同。移位频率较低不代表不需要 STA：hold 尤其容易受短数据路径和时钟偏斜影响；Capture 的 at-speed 路径还必须满足相应的高速约束。</p>
+<p>跨时钟域的功能数据需要适当的同步方案：单 bit 控制常用同步触发器，多 bit 数据常用握手或异步 FIFO。STA 约束不能代替 CDC 验证，也不能把所有跨域路径一律设成 false path 而不考虑同步结构与数据一致性。</p>
+<div class="callout orange">扫描链跨域是测试模式下的移位时序问题；功能 CDC 是不同功能时钟域之间传输数据的问题。二者都涉及时钟，但 Lockup Latch 不能替代功能数据的 CDC 同步方案。</div>
+</section>
+
+<section class="lesson" id="control" data-title="可控性与可观测性">
+<h2>04　故障要先被激活，再被看到</h2>
+<p>芯片外部输入称 PI，外部输出称 PO。可控性描述从测试入口把内部节点设为所需值的难易；可观测性描述内部差异能否传到可观察位置。前者决定能不能制造测试条件，后者决定能不能读到故障的影响。</p>
+<p>假设节点 N 固定为 0，而你给的输入在好电路里也让 N=0，两边没有差异，故障没有被激活。即使好电路 N=1、坏电路 N=0，如果后面一个 OR 门的另一个输入恒为 1，两边输出都为 1，差异就被掩盖了。</p>
+<div class="sequence"><div><strong>设置条件</strong><span>控制输入与寄存器状态。</span></div><div><strong>激活故障</strong><span>好电路与坏电路产生差异。</span></div><div><strong>传播差异</strong><span>让旁路输入取非控制值。</span></div><div><strong>观察响应</strong><span>从 PO 或扫描寄存器读出。</span></div></div>
+<p>SCAN 给内部寄存器增加测试通道；控制/观测测试点改善特定逻辑锥的可测性；MBIST 用内部控制器为存储器产生地址、数据并比较响应。它们不消除全部难测情况，而是为测试提供更好的条件。</p>
+<p>面试时可以说：“我先检查目标故障能否激活，再找传播到观察点的路径。如果状态装入困难，检查控制条件；如果差异被掩盖，检查旁路输入、X 源与观测结构。”这种解释比只背两个定义更完整。</p>
+</section>
+
+<section class="lesson" id="scan-ff" data-title="Scan FF 与模式选择">
+<h2>05　普通 DFF 变成 Scan FF，究竟加了什么？</h2>
+<p>典型 Mux-D Scan FF 可以理解为一个 2:1 MUX 加一个 D 触发器。D 是功能数据，SI 是扫描数据，SE 是模式选择，Q 是寄存器输出。实际库单元还可能有异步复位、独立 SO 或其他控制端口。</p>
+<div class="demo"><div class="control-row"><button class="primary" id="ff-functional">SE=0 · 功能模式</button><button id="ff-scan">SE=1 · 扫描模式</button></div><svg id="ff-svg" role="img" aria-label="MUX 选择 D 或 SI，DFF 在上升沿更新 Q"></svg><p id="ff-status" class="status" aria-live="polite"></p></div>
+<pre><code>always @(posedge clk)
+    q &lt;= se ? si : d;</code></pre>
+<p>SE=0 时选择 D，功能行为与普通触发器一致；SE=1 时选择 SI，按时钟沿接收扫描数据。SE 决定采哪条输入路径，不是异步地把输入直接复制到 Q。</p>
+<p>增加 MUX、测试控制网络和扫描布线会有面积、时序与功耗代价。具体数值依赖库和设计；不能把“一个触发器的面积增幅”当成“整颗芯片的面积增幅”。</p>
+</section>
+
+<section class="lesson" id="shift" data-title="扫描链逐沿移位">
+<h2>06　所有级一起更新，后一级接收前一级的旧值</h2>
+<p>将前一 Scan FF 的 Q 连到后一 Scan FF 的 SI，就形成扫描链。在 SE=1 时，四级链的下一状态是：</p>
+<pre><code>Q0⁺ = SI
+Q1⁺ = Q0旧值
+Q2⁺ = Q1旧值
+Q3⁺ = Q2旧值；SO = Q3</code></pre>
+<p>这不是“一个时钟沿让新 SI 连续穿过四个触发器”。每次只能前进一级，四级链完整装入一个新状态需要四个沿。输入顺序与最终寄存器顺序相反，要先讲清链的方向。</p>
+<div class="demo"><div class="control-row"><label>扫描输入 SI <select id="si"><option>1</option><option>0</option></select></label><button id="shift-step" class="primary">Shift 一个上升沿</button><button id="shift-play">自动演示 1、0、1、1</button><button id="shift-reset">重置</button></div><svg id="shift-svg" role="img" aria-label="四级扫描链的 SVG 数据移动动画"></svg><p id="shift-status" class="status" aria-live="polite"></p><table><thead><tr><th>沿</th><th>输入 SI</th><th>移出旧 SO</th><th>沿后 Q0→Q3</th></tr></thead><tbody id="shift-log"></tbody></table></div>
+<p>从 0000 输入 1、0、1、1，逐次状态应为 <code>1000 → 0100 → 1010 → 1101</code>。当第四次移位完成时，最早输入的 1 已到末级 Q3。SO 当前显示 Q3，表中的“移出”记录采样沿前的 Q3，两者不要混淆。</p>
+<p>多个链可以并行移位，因此装入时间通常由最长链决定。划分链时不能只追求平均长度，还要兼顾时钟域、触发器边沿类型、功耗和物理布线。</p>
+</section>
+
+<section class="lesson" id="capture" data-title="Shift / Capture 完整过程">
+<h2>07　从装入状态，到捕获功能响应，再把结果读出来</h2>
+<p>SCAN 提供状态装入与读出通道。一次测试通常先 SE=1 装入激励，再 SE=0 让功能逻辑产生响应，并用相应捕获沿保存到寄存器，最后 SE=1 移出响应与期望值比较。</p>
+<p>用对话里的两寄存器电路贯穿实验：<code>q1⁺=a AND b</code>，<code>q2⁺=q1旧值 XOR b</code>。扫描模式下则是 <code>q1⁺=SI</code>、<code>q2⁺=q1旧值</code>。</p>
+<div class="demo"><div class="control-row"><label>SI <select id="two-si"><option>0</option><option>1</option></select></label><label>A <select id="two-a"><option>1</option><option>0</option></select></label><label>B <select id="two-b"><option>1</option><option>0</option></select></label><button id="two-shift" class="primary">Shift · SE=1</button><button id="two-capture">Capture · SE=0</button><button id="two-reset">复位</button></div><svg id="two-svg" role="img" aria-label="两个扫描寄存器的移位与功能捕获状态"></svg><p id="two-status" class="status" aria-live="polite"></p></div>
+<h3>做一次完整手算</h3>
+<p>先 Shift 输入 0，再 Shift 输入 1，得到 <code>q1=1、q2=0</code>，也就是按 q2q1 排列的 01。设置 A=B=1 后 Capture：q1⁺=1；q2⁺=旧 q1 XOR 1=1 XOR 1=0。因此状态仍是 q2q1=01。</p>
+<p>如果把 q2 错算成“刚更新的 q1”产生的值，有些输入恰好算出同样答案，仍不能证明理解了时序。可以从复位状态直接 Capture A=B=1：此时 q1⁺=1，q2⁺=0 XOR 1=1，得到 11。比较这两次实验就能看出旧状态的作用。</p>
+<p>Shift Out 时，移出当前响应的同时通常可以移入下一组激励。这种复用省去了为每组 pattern 单独进行完整装入和卸载的额外开销，但首次装入和最后卸载仍需计入。</p>
+</section>
+
+<section class="lesson" id="atpg" data-title="ATPG：激活、传播、观察">
+<h2>08　扫描链是通道，ATPG 决定给通道送什么数据</h2>
+<p>ATPG 是 Automatic Test Pattern Generation，自动测试向量生成。它读取设计、故障模型与测试约束，为目标故障求出能够检测它的模式。SCAN 改善内部状态的控制与观察；ATPG 利用这些条件寻找具体激励，二者分工不同。</p>
+<h3>手算例子：N=A∧B，Y=N∨C，检测 N stuck-at-0</h3>
+<p>第一步激活：坏电路 N 始终为 0，要产生差异，就让好电路 N=1。因此必须 A=B=1。第二步传播：如果 C=1，OR 门会把两边输出都强制为 1，差异被掩盖；令 C=0，Y 才能显示 N 的变化。答案就是 ABC=110。</p>
+<div class="demo"><div class="control-row"><label>A <select id="fault-a"><option>1</option><option>0</option></select></label><label>B <select id="fault-b"><option>1</option><option>0</option></select></label><label>C <select id="fault-c"><option>0</option><option>1</option></select></label><label>故障 <select id="fault-type"><option value="0">N stuck-at-0</option><option value="1">N stuck-at-1</option></select></label></div><svg id="fault-svg" role="img" aria-label="正常与故障电路的内部节点和输出值比较"></svg><p id="fault-status" class="status" aria-live="polite"></p></div>
+<p>反过来测 N stuck-at-1：好电路 N 必须为 0，A/B 至少有一个为 0；C 仍需为 0。此时好 Y=0、坏 Y=1。不是每个故障都只有唯一测试向量，ATPG 可以在多个解之间选择并压缩 pattern。</p>
+<h3>D 代数与实际求解</h3>
+<p>故障传播常用五值描述：0、1、X，以及 D=(好电路1，坏电路0)、D̄=(好电路0，坏电路1)。上面的 SA0 例子在 N 激活 D，再让 D 经过 OR 门传播到 Y。</p>
+<p>复杂电路还有重汇聚和反馈约束：一个输入通过多条路径影响同一门，满足一条路径的赋值可能破坏另一条路径。ATPG 需要做逻辑推导、选择与回溯，不能靠“把故障点设成相反值”就保证测出。</p>
+<p>D 算法、PODEM、FAN 是常见经典算法名称。入门阶段先能解释激活和传播；深入时再比较搜索的决策位置、回溯和蕴含方法，不要把算法名当作已经会用的证明。</p>
+</section>
+
+<section class="lesson" id="transition" data-title="Transition、LOC 与 LOS">
+<h2>09　逻辑值最后能对，也可能因为到得太晚而失效</h2>
+<p>Stuck-at 把故障抽象为节点固定为 0 或 1；transition-delay 把故障抽象为目标节点某个方向的跳变太慢。它们是测试用的故障模型，不是制造缺陷的逐项物理复制。</p>
+<p>测慢上升通常先用 V1 将目标节点初始化为 0，再通过 V2 制造 0→1 跳变，并在规定时间后捕获。若给它很长时间，它最终也可能稳定为 1；高速 Capture 正是为了检查“是否在截止时间前到达”。</p>
+<div class="demo"><div class="control-row"><label>发射方式 <select id="launch-mode"><option>LOC</option><option>LOS</option></select></label><button id="launch-step" class="primary">下一阶段</button><button id="launch-play">播放</button><button id="launch-reset">重置</button></div><svg id="launch-svg" role="img" aria-label="LOC 与 LOS 的 SE 和时钟时序动画"></svg><p id="launch-status" class="status" aria-live="polite"></p><p class="caption">时序为示意、非等比例；Launch/Capture 标线与上升沿对齐。游标只表达教学阶段，不模拟真实门延迟。</p></div>
+<table><thead><tr><th></th><th>LOC / Broadside</th><th>LOS / Skewed Load</th></tr></thead><tbody><tr><td>Launch 从哪里来</td><td>装载后第一个功能模式时钟沿。</td><td>最后一个扫描移位沿。</td></tr><tr><td>第二个向量</td><td>由功能逻辑更新寄存器产生。</td><td>由最后一次移位产生，仍受移位关系约束。</td></tr><tr><td>SE 要求</td><td>Launch 前已为 0，两个功能沿期间保持低。</td><td>Launch 时为 1，之后及时切到 0，满足 Capture 条件。</td></tr><tr><td>脉冲计数</td><td>两个功能脉冲：Launch + Capture。</td><td>最后 Shift 沿 + 一个额外 Capture 沿。</td></tr></tbody></table>
+<p>两种经典方案的 Launch→Capture 间隔都是一个功能周期，不是 LOS 只有半周期。LOS 的优势在于 V2 的产生方式不同；不能据此保证它在任何设计中覆盖率都更高，也不能把 V1/V2 当成完全独立、任意的两组状态。</p>
+<p>OCC（On-Chip Clock Controller）负责测试时钟控制，例如选择慢速移位与高速捕获时钟并输出规定脉冲。具体实现可能包含时钟门控、选择、同步与脉冲控制，必须避免毛刺和窄脉冲；图里的两个方波不能替代真实 OCC 协议和 STA 检查。</p>
+</section>
+
+<section class="lesson" id="test-time" data-title="测试时间与链均衡">
+<h2>10　为什么最长链会决定 ATE 的移位时间？</h2>
+<p>假设多条链并行工作，长度为 500、700、1000、1800。一次完整装入需要按最长链的 1800 个沿安排，短链提前完成并不能让长链也完成。因此链均衡能减少等待，但还要考虑时钟域与物理约束。</p>
+<p>总 FF 数 F、并行链数 M 且接近均衡时，最长长度近似 <code>L=ceil(F/M)</code>。P 个 pattern 流水化执行的 Shift 周期约为 <code>(P+1)L</code>：首次装入 L，之后复用 P−1 次装入/卸载，最后卸载 L。</p>
+<pre><code>Tshift ≈ (P+1) × L / fshift
+Ttotal ≈ Tshift + P × Tcapture + Toverhead</code></pre>
+<div class="demo"><h3>改链数，观察时间如何变化</h3><div class="inputs"><label>扫描 FF 数 F<input id="time-f" type="number" min="1" step="1" value="10000"></label><label>并行链数 M<input id="time-m" type="number" min="1" step="1" value="10"></label><label>Pattern 数 P<input id="time-p" type="number" min="1" step="1" value="1000"></label><label>Shift 频率 MHz<input id="time-freq" type="number" min="0.01" step="0.01" value="20"></label></div><p id="time-status" class="status" aria-live="polite"></p></div>
+<p>默认 L=1000，Shift 周期 1,001,000，在 20 MHz 下为 50.05 ms。把 M 改为 100，L=100，时间变为 5.005 ms。这个近似模型未算捕获、控制、压缩、链不均衡等开销，不是量产测试机的总机时预测。</p>
+<p>若 Capture 使用功能频率，不能把所有周期都除以 fshift。应分别计算 Capture 时间，并考虑协议中的额外等待/切换；LOS 借用最后 Shift 沿 Launch，也不能机械套用 LOC 的脉冲数。</p>
+</section>
+
+<section class="lesson" id="compression" data-title="压缩、X 与跨域移位">
+<h2>11　引脚少，内部链多：为什么还需要扫描压缩？</h2>
+<p>增加并行链能缩短每条链，但外部测试引脚与 ATE 通道有限。扫描压缩在片上用解压器将少量外部通道扩展到多条内部短链，再用响应压缩器将内部响应汇聚到少量输出通道。</p>
+<div class="sequence"><div><strong>ATE 输入</strong><span>较少外部数据通道。</span></div><div><strong>解压器</strong><span>产生内部链所需的扫描数据。</span></div><div><strong>内部扫描链</strong><span>并行装载与捕获。</span></div><div><strong>响应压缩器</strong><span>汇聚后送到 ATE 比较。</span></div></div>
+<p>压缩后 ATPG 必须考虑编码能力和相应约束。压缩比不等于测试时间按同样倍数下降；pattern 数、指定 bit 密度、X、链配置、覆盖目标都会影响实际收益。</p>
+<h3>X 为什么会影响响应？</h3>
+<p>未初始化存储器、黑盒模型、未约束输入等可能产生未知值。若响应经过 XOR 压缩，一个 X 会使某些压缩输出无法确定，从而影响该输出的比较能力。普通串行扫描里一个 X 不会自动让所有经过的位都变 X；要看实际传播和压缩结构。</p>
+<p>X-bounding 在适当位置限制未知源影响，X-masking 在响应路径屏蔽未知比较位。两者都应保留足够的有效观测，不能为了消掉 X 就随意把功能信号全部设成常量。</p>
+<h3>Lockup Latch 处理的是什么？</h3>
+<p>跨时钟域或混合边沿的扫描链可能因偏斜产生移位 hold 问题。适当的 Lockup 元件为数据传递增加隔离时间窗口。是否需要、采用什么极性和位置，都要结合前后触发器的时钟关系；不是“跨域就随意加一个锁存器”。</p>
+<p>物理实现中还可能重排扫描顺序，缩短布线并改善拥塞。重排后需要同步更新下游扫描信息与 pattern 使用条件，不能只改网表却沿用旧扫描链顺序。</p>
+</section>
+
+<section class="lesson" id="shell" data-title="Tessent 工作流与脚本">
+<h2>12　工具不是黑盒：先说清输入、操作和输出</h2>
+<p>Tessent 是 Siemens EDA 的 DFT 工具体系。Shell 提供 Tcl 操作环境，Scan/ScanPro 与扫描结构相关，FastScan/TestKompress 与 ATPG 及压缩流程相关，MemoryBIST 与存储器测试结构相关。产品名称、功能与具体接口会随版本变化。</p>
+<p>一次任务需要设计 RTL/网表、单元或存储器模型、顶层名称、时钟/复位/测试约束和流程配置。交付物可能包括插入后的设计、测试 setup/procedure、TSDB、扫描报告、故障报告和 pattern。真实项目往往分阶段执行，并不是永远“先综合，再一次性插完全部 DFT”。</p>
+<h3>Context 与 System Mode 别混为一谈</h3>
+<p>Context 决定当前处理哪类任务，例如扫描结构处理或扫描 pattern；System Mode 描述流程处于配置还是分析阶段。命令除了名字，还有限定 context、mode 和 prerequisites。应读安装版本的帮助，而不是只复制一段 Tcl。</p>
+<pre><code># 结构与顺序示意：路径、库、顶层、时钟和测试约束需按项目补全
+set_context dft -scan
+read_verilog my_design.v
+read_cell_library tessent_cell.tcellib
+set_current_design my_design
+add_clocks 0 clock
+# 此处配置扫描控制、模式、链等；按安装版本及项目流程核对
+check_design_rules
+analyze_scan_chains
+report_scan_elements
+insert_test_logic
+write_atpg_setup my_design</code></pre>
+<p>在原项目采用的 v2021.3 扫描流程说明中，<code>check_design_rules</code> 是 setup 阶段进入 analysis 的检查关口。若 DRC 未满足，不应该仅靠强行切模式绕过去。Scan 插入和 ATPG 生成是两个不同任务，前者建立结构，后者计算 pattern。</p>
+<pre><code># ATPG 阶段骨架；仅在相应输入和前置条件已正确配置时成立
+set_context patterns -scan
+read_verilog scan_inserted.v
+read_cell_library tessent_cell.tcellib
+set_current_design my_design
+set_fault_type Transition
+check_design_rules
+read_procfile my_design.testproc
+create_patterns
+report_statistics
+write_patterns my_pats.stil -stil</code></pre>
+<p>本页按项目 12 章核对上述骨架：使用 <code>patterns</code>；<code>read_procfile</code> 放在 analysis 阶段；pattern 格式用相应开关。所有路径和设计名都是示例，仍需核对安装版本的正式开关、输入模型和时钟过程。</p>
+<h3>TSDB 与 MemoryBIST 规格</h3>
+<p>TSDB 用来管理设计与 DFT 流程数据，支持阶段之间的数据复用。MemoryBIST 规格生成需要真实内存实例与模型；两寄存器的小例子没有 SRAM，不能只打开 memory_test 就凭空得到可测试存储器。</p>
+<pre><code># 对话中的 MemoryBIST 规格处理框架，非本实验的执行命令
+set_context dft -rtl -design_id rtl1
+set_tsdb_output_directory ./tsdb
+read_verilog ./rtl/chip_top.v
+set_current_design chip_top
+set_dft_specification_requirements -memory_test on
+check_design_rules
+set spec [create_dft_specification]
+report_config_data $spec</code></pre>
+<p class="muted">商业 Tessent 未在本教程制作中运行。本页验证的是教学动画和行为级 Verilog；命令示例用于建立流程概念，实际工程以工具版本、许可证、库和项目配置为准。</p>
+</section>
+
+<section class="lesson" id="debug" data-title="DRC 与报告 Debug">
+<h2>13　不是工具退出成功，测试就完成了</h2>
+<p>Scan DRC 重点检查测试模式下的可控时钟、复位/置位、模式选择、扫描可达性等条件。它不是普通 RTL lint，也不能替代后续仿真和测试模式 STA。</p>
+<pre><code># 教学日志，不是 Tessent 原始输出
+Checking test clocks ...
+Checking asynchronous reset ...
+WARNING: Reset cannot be controlled in test mode
+ERROR: Scan test rule violated
+DFT rule check: FAILED</code></pre>
+<p>如果扫描期间复位意外有效，刚装入的测试状态会被清掉。应追查复位源、极性、测试控制与安全释放条件，而不是直接删 RTL 复位。如果部分寄存器没有测试时钟，应检查门控和选择器的传播条件，而不是只调整链长。</p>
+<div class="demo"><label>选择现象 <select id="issue"><option value="reset">扫描期间复位有效</option><option value="clock">扫描时钟无法传播</option><option value="x">Capture 响应大量 X</option><option value="chain">扫描链数据移位异常</option></select></label><p id="issue-status" class="status" aria-live="polite"></p></div>
+<h3>链报告最少检查哪些项？</h3>
+<table><thead><tr><th>信息</th><th>检查目的</th></tr></thead><tbody><tr><td>数量与长度分布</td><td>看最长链、链均衡和是否符合规划。</td></tr><tr><td>SI / SO 端口与顺序</td><td>核对外部通道、串接顺序、是否遗漏单元。</td></tr><tr><td>时钟域与有效边沿</td><td>看跨域连接及移位时序风险。</td></tr><tr><td>Lockup 与测试控制</td><td>确认控制条件及所需隔离结构。</td></tr><tr><td>Pattern 仿真</td><td>用装载、捕获和卸载验证整个协议。</td></tr></tbody></table>
+<p>对话中的模拟链长是 1002、998、1001、999，总计 4000 FF；最长链 1002 而不是平均的 1000。报告能告诉你“有什么”，还要结合网表、约束和波形解释“为什么”。</p>
+<p>建议每次排查留下输入版本、约束、运行命令、报告和复现方式。先找到第一处错误，再分析它如何传播；不要通过改参数把错误压掉后就当作修复。</p>
+</section>
+
+<section class="lesson" id="coverage" data-title="故障分类与覆盖率">
+<h2>14　一个 95%，不能独立解释测试质量</h2>
+<p>对话的基础例子是：目标故障 10,000 个，检测 9,500 个，按检测数/总数得 95%。这个算式适合入门，但真实报告必须先看故障模型、分类和统计口径。</p>
+<p>原项目 08/12 章引用的 Tessent v2021.3 分类关系如下。不能把不同工具的同名类别混用，也不能把 AU 直接当成 UT 从分母扣除。</p>
+<pre><code>FU = TE + UT                    全部故障
+TE = DT + PD + AU + UD           可测集合的分类
+UT = UU + TI + BL + RE           不可测集合
+DT_eff = DT + credit × PD
+Fault coverage = DT_eff / FU
+Test coverage  = DT_eff / (FU − UT)</code></pre>
+<p>DT 为已检测，PD 为可能检测，AU 为 ATPG 不可测分类，UD 为未检测；UT 是 UNTestable，不是“未测试”。在此口径中 AU 仍属于 TE。Possible-detection credit 在该版本资料中默认 50%，运行配置可能调整，核对报告时应读取实际设置。</p>
+<div class="demo"><h3>同一组检测结果，为什么两个覆盖率不同？</h3><div class="inputs"><label>FU 全部故障<input id="cov-fu" type="number" value="10000" min="1"></label><label>DT 已检测<input id="cov-dt" type="number" value="9000" min="0"></label><label>PD 可能检测<input id="cov-pd" type="number" value="200" min="0"></label><label>UT 不可测<input id="cov-ut" type="number" value="500" min="0"></label><label>PD credit %<input id="cov-credit" type="number" value="50" min="0" max="100"></label></div><p id="cov-status" class="status" aria-live="polite"></p></div>
+<p>默认有效检测数为 9000+0.5×200=9100。Fault coverage=91%；Test coverage=9100/9500≈95.79%。看上去第二个更高，只是分母不同，并不是又发现了更多故障。</p>
+<h3>遇到覆盖不达标，先分解未覆盖故障</h3>
+<p>大量 UC/UO 时查控制与观测条件；黑盒、约束相关分类要核对模型及约束；搜索放弃项才适合进一步评估资源限额和求解策略。AAB/EAB 在原项目引用的分类中属于 UD 子类，不能不加区分地说“全部 aborted 就是逻辑本身不可测”。</p>
+<p>不要只为了把百分比抬高而删故障、改分母。报告中的定义、排除理由和测试适用条件需要一起说明。故障覆盖率也不是晶体管级“所有真实缺陷都被覆盖”的保证。</p>
+</section>
+
+<section class="lesson" id="sram" data-title="SRAM 与 MBIST 架构">
+<h2>15　存储位不是普通 Scan FF，测试方法也不同</h2>
+<p>1024×8 SRAM 有 1024 个字地址、每个地址 8 bit，总容量 8192 bit。它通常由专用 memory macro 实现，内部包含存储单元、字线、位线、译码、读写驱动和感放等。不能把这些 bit 都当作可替换成 SDFF 的标准单元寄存器。</p>
+<p>典型 6T SRAM 通过交叉耦合的存储结构保存值。写入时选择字线并由位线/写驱动施加数据；读取时选择字线，存储状态影响位线，外围读出电路判定数据。内部结构可能产生地址译码、转换、耦合与读写干扰等故障。</p>
+<p>Memory Built-In Self-Test 在片内产生有规律的测试访问，并比较实际读回值与期望值。普通逻辑常用 SCAN+ATPG，嵌入式 SRAM 常用 MBIST，两者互补。</p>
+<div class="sequence"><div><strong>地址发生器</strong><span>决定当前地址与升/降序。</span></div><div><strong>数据与 FSM</strong><span>生成背景值、读写操作和阶段。</span></div><div><strong>存储器接口</strong><span>切换功能/测试访问，满足访问时序。</span></div><div><strong>比较与状态</strong><span>检查读回，记录 DONE、FAIL 或诊断信息。</span></div></div>
+<p>控制器既可以服务单块存储器，也可能通过复用/分组服务多块。能否同时测试要看接口兼容性、时钟、功耗和时间预算，不是连接到同一个控制器就自然同时测完。</p>
+<p>MBIST 常用于晶圆或封装测试，也可在适用的系统中进行上电或周期性自检。破坏性 March 会覆盖原数据，在线测试还需考虑业务访问隔离、内容保存恢复或相应的透明测试方案。</p>
+</section>
+
+<section class="lesson" id="march" data-title="March C−：40 步读写实验">
+<h2>16　看懂符号，比死背六行序列更重要</h2>
+<p>March 是按指定地址顺序，对每个地址执行一串读写操作。↑/↓ 是地址从低到高/从高到低，↕ 表示方向不限；w0/w1 是写入，r0/r1 是读取并比较期望值。</p>
+<p><code>↑(r0,w1)</code> 的意思是：地址 0 读0、写1，然后地址1读0、写1，以此类推。不能先读完整个阵列，再把整个阵列写1，那是另一种操作顺序。</p>
+<table><thead><tr><th>阶段</th><th>序列</th><th>每地址操作数</th><th>目的直观解释</th></tr></thead><tbody><tr><td>M0</td><td>↕(w0)</td><td>1</td><td>建立全0初始背景。</td></tr><tr><td>M1</td><td>↑(r0,w1)</td><td>2</td><td>检查0，再制造0→1转换。</td></tr><tr><td>M2</td><td>↑(r1,w0)</td><td>2</td><td>检查1，再制造1→0转换。</td></tr><tr><td>M3</td><td>↓(r0,w1)</td><td>2</td><td>换访问顺序，施加另一方向的测试条件。</td></tr><tr><td>M4</td><td>↓(r1,w0)</td><td>2</td><td>继续反向检查与转换。</td></tr><tr><td>M5</td><td>↕(r0)</td><td>1</td><td>最后检查全0背景。</td></tr></tbody></table>
+<p>共有六个 March 元素，每地址操作数 <code>1+2+2+2+2+1=10</code>，所以是 10N，不是按元素个数算成 6N。下面用 4 地址×1 bit 演示 40 次基本操作，每一次真正执行一个读或写。</p>
+<div class="demo"><div class="control-row"><label>故障 <select id="march-fault"><option value="none">无故障</option><option value="sa0">地址1 stuck-at-0</option><option value="rise">地址1 无法0→1</option><option value="couple">写地址0的1，翻转地址1</option></select></label><button id="march-next" class="primary">下一操作</button><button id="march-prev">上一步</button><button id="march-play">播放</button><button id="march-reset">重置</button></div><svg id="march-svg" role="img" aria-label="March C− 的地址、数据、读回比较和故障注入动画"></svg><p id="march-status" class="status" aria-live="polite"></p><div class="track"><span id="march-progress"></span></div><p class="caption">一读/写视作一步；无真实 SRAM 延迟。故障选项是明确的简化模型，实际 FAIL 来自期望/读回比较，不是直接勾选故障就置 FAIL。切换故障会从头开始。</p></div>
+<h3>为什么还要倒着访问？</h3>
+<p>耦合故障涉及 aggressor 与 victim：操作一个单元可能影响另一个。访问顺序会决定某个单元被修改时，相邻或相关单元处于什么数据背景、何时被读到。升序与降序提供不同条件，但逻辑地址相邻并不保证物理布局相邻。</p>
+<p>March C− 对典型固定故障、转换故障及指定假设下的地址/耦合故障有检测能力；不能说它覆盖所有 SRAM 缺陷。具体覆盖范围还取决于 bit/word 组织、故障模型、数据背景和附加时序条件。</p>
+</section>
+
+<section class="lesson" id="memory-time" data-title="MBIST 时间、算法与修复">
+<h2>17　1024×8 的测试时间，为什么不直接乘 8192？</h2>
+<p>如果每个字访问同时操作 8 bit，March 的遍历对象就是 1024 个字地址，而不是 8192 次独立 bit 访问。March C− 的基本访问数为 10×1024=10240；假定一次读或写占一周期、100 MHz，理想时间为 102.4 μs。</p>
+<p>这个模型已包含算法的 w0 初始化，但不含控制器启动、等待周期、SRAM 读延迟、访问流水线、额外背景、模式切换与收尾等开销。若一个操作需要多个周期，就要按实际访问协议计算。</p>
+<h3>算法选择是在覆盖目标与时间之间权衡</h3>
+<p>MATS+ 的序列 <code>↕(w0);↑(r0,w1);↓(r1,w0)</code> 按操作计是5N。March C 比 C− 多一次位于升序对与降序对之间的全读0，因此是11N。复杂度能直接数出来，不应靠猜名字。</p>
+<p>更长的 March 算法、棋盘格、条纹和保持/读干扰测试可能面向不同缺陷。不能单凭操作次数最多就称它“最强”，也不能只说“March 能测 NPSF”而不指定算法和背景。</p>
+<h3>测到故障以后，什么时候能修？</h3>
+<p>如果 SRAM 宏有冗余行/列和修复机制，故障地址与数据可用于诊断；BIRA（冗余分析）计算备用资源分配；BISR（内建自修复）应用修复配置。配置可能通过 eFuse/OTP 等机制保存，也可能在启动时装载。</p>
+<p>MBIST 检测、BIRA 分析与 BISR 应用是不同环节。没有冗余资源、修复结构或可用分配方案时，不能因为“支持 MBIST”就说一定能自动修复。完成修复还需要重新测试验证。</p>
+</section>
+
+<section class="lesson" id="lbist" data-title="LBIST、MISR 与测试访问">
+<h2>18　逻辑也能自测，但签名相同不等于绝对无故障</h2>
+<p>LBIST 主要面向逻辑。典型结构用 PRPG 产生伪随机激励，经扫描链施加到逻辑，再用 MISR（多输入签名寄存器）压缩响应，最终与 golden signature 比较。</p>
+<div class="sequence"><div><strong>PRPG / LFSR</strong><span>逐步生成伪随机序列。</span></div><div><strong>逻辑与 Scan</strong><span>执行测试并产生响应。</span></div><div><strong>MISR</strong><span>连续累积压缩签名。</span></div><div><strong>Golden 比较</strong><span>检查最终签名。</span></div></div>
+<p>LFSR 是 Linear Feedback Shift Register，线性反馈移位寄存器。它不是“潜伏故障自修复”的缩写；功能安全里的 LFM 是另一种度量。具体反馈多项式、位序、种子决定序列，不是随意 XOR 几个位就一定得到合适的 PRPG。</p>
+<p>响应签名不同说明测试发现了异常；相同仍可能漏检：激励未覆盖目标故障，或者不同响应序列压成相同签名，即 aliasing。LBIST 还需处理随机抗性故障、X 和切换功耗。</p>
+<table><thead><tr><th></th><th>Scan ATPG</th><th>MBIST</th><th>LBIST</th></tr></thead><tbody><tr><td>主要对象</td><td>逻辑</td><td>存储器</td><td>逻辑</td></tr><tr><td>激励来源</td><td>工具求解，通常由 ATE 提供。</td><td>内部算法控制器。</td><td>通常为片内伪随机发生器。</td></tr><tr><td>检查方法</td><td>期望响应比较。</td><td>存储器读回比较。</td><td>MISR 签名比较。</td></tr></tbody></table>
+<p>JTAG / IEEE 1149.1 常用于边界扫描与测试访问，TCK/TMS/TDI/TDO 是基本四根信号，TRST 可选。IJTAG / IEEE 1687 关注内部仪器的访问网络，可用于访问 MBIST 等结构。二者不是普通内部扫描链的另一个名字。</p>
+</section>
+
+<section class="lesson" id="lab" data-title="可运行的 Verilog 实验">
+<h2>19　用同一个两寄存器电路，把原理变成可观察结果</h2>
+<p>对话提供了功能 RTL、手写扫描模型和 testbench。这里补全代码，并强化卸载检查：明确比较两次移位前的 SO，而不是只让仿真走完。手写模型只验证扫描行为，不代表商业工具生成的网表。</p>
+<h3>功能 RTL · dft_demo.v</h3><pre><code data-code="dft_demo.v"></code></pre>
+<h3>扫描行为模型 · scan_demo.v</h3><pre><code data-code="scan_demo.v"></code></pre>
+<h3>自检 Testbench · tb_scan.v</h3><pre><code data-code="tb_scan.v"></code></pre>
+<div class="control-row"><button data-download="dft_demo.v">保存功能 RTL</button><button data-download="scan_demo.v">保存扫描模型</button><button data-download="tb_scan.v">保存 Testbench</button></div>
+<h3>运行和观察</h3>
+<pre><code># 安装 Icarus Verilog 后，在三个文件所在目录运行
+iverilog -g2012 -s tb_scan -o sim.vvp scan_demo.v tb_scan.v
+vvp sim.vvp
+# 如已安装 GTKWave，可打开波形
+gtkwave scan.vcd</code></pre>
+<p>测试过程检查复位、两次装载、两组 Capture、响应卸载和最终清零。失败会用 <code>$fatal</code> 报出实际值并返回失败状态；正常时输出 <code>PASS: reset, shift, capture, unload model</code>。VCD 中可看 clk、rst_n、se、si、a、b、q1、q2 与 so。</p>
+<p>Testbench 在下降沿设置 SE/输入，在上升沿后等待一个仿真时间单位再检查，避开与 DUT 非阻塞赋值更新的竞争。这里的时间安排是行为仿真的教学方法，不是对真实器件时序的签核。</p>
+<div class="callout green">建议练习：把 q2 的扫描更新故意写成 q2&lt;=si，运行并看装载检查失败；恢复后，把 q2 的功能表达式写错，再看 Capture 检查失败。这样能区分链结构错误与功能响应错误。</div>
+</section>
+
+<section class="lesson" id="review" data-title="面试自检与进一步阅读">
+<h2>20　先讲因果，再讲命令；把学过和做过分开</h2>
+<p>对话中的教程旨在建立原理与工程流程的连接。自检时先用一两分钟独立回答，再展开参考答案。能够操作动画，不等于完成真实芯片测试；能够解释脚本，也不等于已经跑过量产 Tessent 流程。</p>
+<details><summary>1. SCAN 和 ATPG 各自解决什么？</summary><p>SCAN 提供内部状态装入/读出的结构通道；ATPG 根据故障模型、网表和约束计算能激活并观测故障的 pattern。</p></details>
+<details><summary>2. 为什么下一级采前一级旧值？</summary><p>同步边沿采样发生在寄存器输出更新之前。Verilog 中非阻塞赋值先按旧状态计算右侧，再更新左侧；一个沿不等于多级数据连续穿透。</p></details>
+<details><summary>3. A=B=1，却仍测不到 N stuck-at-0，为什么？</summary><p>检查传播条件。Y=N∨C 时若 C=1，两边 Y 都为1，差异被掩盖。激活故障只是第一步，还要传播和观察。</p></details>
+<details><summary>4. LOC / LOS 的 Launch 分别来自哪里？</summary><p>LOC 来自功能模式第一个沿；LOS 来自最后 Shift 沿。经典方案 Launch 到 Capture 间隔为一个功能周期。LOS 需要在这一窗口内完成 SE 切换。</p></details>
+<details><summary>5. 覆盖率不足，是否应该直接增加 pattern？</summary><p>先看故障模型、分类、X 和约束，再根据根因选择措施。若故障无法激活/观察，仅增加 pattern 或搜索时间可能无效。</p></details>
+<details><summary>6. March C− 为什么是10N，N是什么？</summary><p>六元素每地址操作数相加是10。N 应按算法实际遍历的位置定义；字接口可并行读写多 bit，字宽不意味着访问次数必然再乘同样倍数。</p></details>
+<details><summary>7. 没有真实 DFT 项目，怎样介绍目前能力？</summary><p>说明实际学习与实验：“我理解 Scan/ATPG/MBIST 的基本机制，能手算测试例子、运行行为模型并分析典型报告。尚未做量产级 DFT；遇到具体工具任务，会先确认版本、输入、约束和前置条件，再运行和验证。”</p></details>
+<h3>保留原章节，继续深入</h3><div class="resource-list"><a href="07-DFT面试准备-数字电路与RTL基础.md">07 · 数字电路与 RTL<span>组合/时序、FSM、Verilog、setup/hold 与 CDC。</span></a><a href="08-DFT面试准备-SCAN与ATPG.md">08 · SCAN 与 ATPG<span>故障模型、扫描压缩、分类与算法。</span></a><a href="09-DFT面试准备-MBIST与存储器测试.md">09 · MBIST 与存储器<span>March、SRAM 故障与修复。</span></a><a href="12-DFT面试准备-Tessent工具专题.md">12 · Tessent 工具<span>版本相关命令、模式、DRC 与 TSDB。</span></a><a href="10-DFT面试准备-简历项目逐条答辩.md">10 · 简历答辩<span>把真实项目、指标与 DFT 学习边界讲清。</span></a><a href="11-DFT面试速查手册与策略.md">11 · 面试速查<span>快问快答、口述检查与风险清单。</span></a></div>
+<p class="muted">主要讲解素材来自你提供的 <a href="https://chatgpt.com/c/6ac85a27-eff0-83ee-8b37-560b899adf0c">“DFT 工程师教程图解”对话</a>中已加载的正文：RTL/波形/综合、SCAN/ATPG、MBIST/LBIST、Tessent 与两寄存器实验。已重新组织和改写，并对照本项目 07–12 章核对关键口径。更早消息在来源页面未完成加载，未声称覆盖未读取部分。</p>
+</section>
+
+<footer class="footer">单文件离线教程 · 动画为教学模型 · 配套实验为行为级 Verilog · 2026-10-10</footer></main></div><script>const labFiles = {"tb_scan.v": "`timescale 1ns/1ps\nmodule tb_scan;\n  reg clk=0,rst_n=0,a=0,b=0,se=0,si=0;\n  wire q1,q2,so;\n  scan_demo dut(.clk(clk),.rst_n(rst_n),.a(a),.b(b),.se(se),.si(si),.q1(q1),.q2(q2),.so(so));\n  always #5 clk=~clk;\n  task tick; begin @(posedge clk); #1; end endtask\n  task shift; input bit_in; begin @(negedge clk); se=1; si=bit_in; tick; end endtask\n  initial begin\n    $dumpfile(\"scan.vcd\"); $dumpvars(0,tb_scan);\n    #1; rst_n=1;\n    #1; rst_n=0;\n    #1;\n    if ({q2,q1} !== 2'b00) $fatal(1,\"Reset failed\");\n    #1; rst_n=1;\n    // Shift in desired q2:q1 = 2'b01: first load 0, then 1.\n    shift(0); shift(1);\n    if ({q2,q1} !== 2'b01) $fatal(1,\"Shift failed: %b%b\",q2,q1);\n    @(negedge clk); se=0; a=1; b=1;\n    tick;\n    if ({q2,q1} !== 2'b01) $fatal(1,\"Capture failed: %b%b\",q2,q1);\n    // Unload: scan_out is old q2 before first shift edge.\n    if (so !== 1'b0) $fatal(1,\"Unexpected scan out\");\n    shift(0);\n    if (so !== 1'b1) $fatal(1,\"Second unload bit failed\");\n    shift(0);\n    if ({q2,q1} !== 2'b00) $fatal(1,\"Unload state failed\");\n    @(negedge clk); se=0; a=1; b=1;\n    tick;\n    if ({q2,q1} !== 2'b11) $fatal(1,\"Capture from zero failed\");\n    $display(\"PASS: reset, shift, capture, unload model\");\n    $finish;\n  end\nendmodule\n", "scan_demo.v": "// Educational hand-written scan-equivalent model; NOT Tessent generated netlist.\nmodule scan_demo(input wire clk, rst_n, a, b, se, si,\n                 output reg q1, q2, output wire so);\n  assign so = q2;\n  always @(posedge clk or negedge rst_n) begin\n    if (!rst_n) begin q1 <= 0; q2 <= 0; end\n    else if (se) begin q1 <= si; q2 <= q1; end\n    else begin q1 <= a & b; q2 <= q1 ^ b; end\n  end\nendmodule\n", "dft_demo.v": "module dft_demo(input wire clk, rst_n, a, b, output reg q1, q2);\n  always @(posedge clk or negedge rst_n) begin\n    if (!rst_n) begin q1 <= 1'b0; q2 <= 1'b0; end\n    else begin q1 <= a & b; q2 <= q1 ^ b; end\n  end\nendmodule\n"};
+'use strict';
+const $ = id => document.getElementById(id);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const colors = {blue:'#2463eb',green:'#13795b',orange:'#bc5b14',red:'#b33c37',muted:'#aab4b8'};
+const txt = (x,y,text,anchor='start',fill='#17212b') => `<text x="${x}" y="${y}" text-anchor="${anchor}" fill="${fill}">${text}</text>`;
+const line = (x1,y1,x2,y2,color=colors.muted,dash='') => `<path d="M${x1} ${y1} L${x2} ${y2}" fill="none" stroke="${color}" stroke-width="2" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
+const box = (x,y,w,h,fill='#fff',stroke=colors.muted) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${fill}" stroke="${stroke}"/>`;
+function svg(id,height,content) {
+  const el=$(id),w=Math.max(260,Math.floor(el.clientWidth));
+  el.setAttribute('viewBox',`0 0 ${w} ${height}`);
+  el.innerHTML=content(w);
+}
+let half=0,rtlQ=0,rtlHistory=[{clk:0,d:0,q:0}],rtlClock=0;
+function drawRTL(){const d=Number($('rtl-a').value)&Number($('rtl-b').value);rtlHistory[rtlHistory.length-1].d=d;svg('rtl-svg',183,w=>{
+  let result='';const left=42,right=w-12,n=Math.max(10,rtlHistory.length-1),dx=(right-left)/n;
+  ['clk','d','q'].forEach((key,lane)=>{const top=24+lane*45,low=top+22;result+=txt(2,low,key.toUpperCase());let path=`M${left} ${rtlHistory[0][key]?top:low}`;for(let i=1;i<rtlHistory.length;i++)path+=` H${left+i*dx} V${rtlHistory[i][key]?top:low}`;path+=` H${Math.min(right,left+rtlHistory.length*dx)}`;result+=`<path d="${path}" fill="none" stroke="${[colors.blue,colors.orange,colors.green][lane]}" stroke-width="2.5"/>`;});
+  return result+txt(left,172,'半周期步进 →');
+});$('rtl-status').textContent=`半周期 ${half} · CLK=${rtlClock} · D=A∧B=${d} · Q=${rtlQ}；${rtlClock?'最近一次上升沿已采样':'Q 保持最近一次采样值'}`;}
+$('rtl-step').onclick=()=>{half++;rtlClock=1-rtlClock;const d=Number($('rtl-a').value)&Number($('rtl-b').value);if(rtlClock)rtlQ=d;rtlHistory.push({clk:rtlClock,d,q:rtlQ});if(rtlHistory.length>11)rtlHistory.shift();drawRTL();};
+$('rtl-reset').onclick=()=>{half=0;rtlQ=0;rtlClock=0;rtlHistory=[{clk:0,d:0,q:0}];drawRTL();};
+['rtl-a','rtl-b'].forEach(id=>$(id).onchange=drawRTL);
+let ffSE=0;
+function drawFF(){svg('ff-svg',175,w=>{const mux=w*.37,dff=w*.67;return txt(4,49,'D')+txt(4,100,'SI')+line(23,45,mux,45,ffSE?colors.muted:colors.blue)+line(23,96,mux,96,ffSE?colors.blue:colors.muted)+box(mux,26,48,90,'#e9efff',colors.blue)+txt(mux+24,70,'MUX','middle')+txt(mux+24,91,`SE=${ffSE}`,'middle')+line(mux+48,69,dff,69,colors.blue)+box(dff,39,57,62,'#e2f5ed',colors.green)+txt(dff+28.5,73,'DFF','middle')+line(dff+57,69,w-25,69,colors.green)+txt(w-17,73,'Q')+txt(w/2,150,'上升沿采样；其他时间保持','middle');});$('ff-status').textContent=ffSE?'SE=1：选择 SI。到有效时钟沿才更新 Q。':'SE=0：选择功能 D。到有效时钟沿才更新 Q。';$('ff-functional').setAttribute('aria-pressed',String(!ffSE));$('ff-scan').setAttribute('aria-pressed',String(!!ffSE));}
+$('ff-functional').onclick=()=>{ffSE=0;drawFF();};$('ff-scan').onclick=()=>{ffSE=1;drawFF();};
+let chain=[0,0,0,0],shiftCount=0,shiftTimer=null,shiftLog=[];
+function stopShift(){clearInterval(shiftTimer);shiftTimer=null;$('shift-play').textContent='自动演示 1、0、1、1';}
+function drawShift(old=null,si=null){svg('shift-svg',175,w=>{const cell=(w-78-18)/4,gap=6,x=Array.from({length:4},(_,i)=>36+i*(cell+gap));let content=txt(0,51,'SI')+txt(w-24,51,'SO');chain.forEach((v,i)=>{content+=box(x[i],25,cell,65,v?'#e2f5ed':'#fff',v?colors.green:colors.muted)+txt(x[i]+cell/2,46,`Q${i}`,'middle')+txt(x[i]+cell/2,72,v,'middle');if(i<3)content+=line(x[i]+cell,55,x[i+1],55,colors.blue);});content+=txt(w/2,158,`SE=1 · 第 ${shiftCount} 个沿 · 当前 SO=${chain[3]}`,'middle');if(old&&!reduced){const vals=[si,...old.slice(0,3)];vals.forEach((v,i)=>{const start=i?x[i-1]+cell/2:12,end=x[i]+cell/2;content+=`<g opacity="1"><animateTransform attributeName="transform" type="translate" from="${start} 119" to="${end} 119" dur=".45s" fill="freeze"/><animate attributeName="opacity" from="1" to="0" begin=".45s" dur=".01s" fill="freeze"/><circle r="11" fill="#e9efff" stroke="${colors.blue}"/>${txt(0,4,v,'middle')}</g>`;});}return content;});$('shift-status').textContent=`Q0→Q3=${chain.join('')}；当前 SO=${chain[3]}。${shiftLog.length?`最近移出旧 SO=${shiftLog[shiftLog.length-1].out}`:'初始状态。'}`;$('shift-log').innerHTML=shiftLog.slice(-8).map(r=>`<tr><td>${r.count}</td><td>${r.si}</td><td>${r.out}</td><td>${r.state}</td></tr>`).join('');}
+function shiftOnce(){const si=Number($('si').value),old=chain.slice(),out=chain[3];chain=[si,...old.slice(0,3)];shiftCount++;shiftLog.push({count:shiftCount,si,out,state:chain.join('')});drawShift(old,si);}
+$('shift-step').onclick=()=>{stopShift();shiftOnce();};$('shift-reset').onclick=()=>{stopShift();chain=[0,0,0,0];shiftCount=0;shiftLog=[];drawShift();};
+$('shift-play').onclick=()=>{if(shiftTimer){stopShift();return;}chain=[0,0,0,0];shiftCount=0;shiftLog=[];drawShift();let i=0;const next=()=>{$('si').value=String([1,0,1,1][i++]);shiftOnce();if(i===4)stopShift();};if(reduced){while(i<4)next();return;}$('shift-play').textContent='暂停';shiftTimer=setInterval(next,850);};
+let q1=0,q2=0;
+function drawTwo(message='初始状态'){svg('two-svg',135,w=>{const centers=[w*.27,w*.72];return centers.map((x,i)=>box(x-38,25,76,63,'#e2f5ed',colors.green)+txt(x,45,i?'q2 / SO':'q1','middle')+txt(x,71,i?q2:q1,'middle')).join('')+line(centers[0]+38,56,centers[1]-38,56,colors.blue)+txt(w/2,119,`q2q1 = ${q2}${q1}`,'middle');});$('two-status').textContent=message+`；当前 q1=${q1}、q2=${q2}`;}
+$('two-shift').onclick=()=>{const old=q1,out=q2;q1=Number($('two-si').value);q2=old;drawTwo(`Shift：移出旧 SO=${out}，q2 接收旧 q1=${old}`);};
+$('two-capture').onclick=()=>{const old=q1,a=Number($('two-a').value),b=Number($('two-b').value);q1=a&b;q2=old^b;drawTwo(`Capture：q1⁺=${a}∧${b}=${q1}；q2⁺=旧 q1(${old}) XOR ${b}=${q2}`);};
+$('two-reset').onclick=()=>{q1=q2=0;drawTwo('复位');};
+function drawFault(){const a=Number($('fault-a').value),b=Number($('fault-b').value),c=Number($('fault-c').value),bad=Number($('fault-type').value),n=a&b,goodY=n|c,badY=bad|c,detected=goodY!==badY;svg('fault-svg',192,w=>{const ax=w*.21,ox=w*.69;return txt(2,44,`A=${a}`)+txt(2,84,`B=${b}`)+line(33,40,ax,40,colors.blue)+line(33,80,ax,80,colors.blue)+box(ax,31,48,58,'#e9efff',colors.blue)+txt(ax+24,66,'AND','middle')+line(ax+48,60,ox,60,colors.orange)+txt((ax+48+ox)/2,42,`N=${n} / ${bad}`,'middle')+box(ox,36,41,50,'#e2f5ed',colors.green)+txt(ox+20.5,66,'OR','middle')+txt(2,115,`C=${c}`)+`<path d="M33 112 H${ox-9} V75 H${ox}" fill="none" stroke="${colors.blue}" stroke-width="2"/>`+txt(w/2,155,`正常 Y=${goodY} · 故障 Y=${badY}`,'middle')+txt(w/2,181,detected?'差异已到达输出：检出':'输出相同：未检出','middle',detected?colors.green:colors.red);});$('fault-status').textContent=n===bad?'没有激活：好电路的 N 与故障固定值相同。':c?'已激活，但 C=1 把 N 的差异掩盖了。':'已激活且成功传播：输出与期望不同，故障被检出。';}
+['fault-a','fault-b','fault-c','fault-type'].forEach(id=>$(id).onchange=drawFault);
+let launchStep=0,launchTimer=null;
+function stopLaunch(){clearInterval(launchTimer);launchTimer=null;$('launch-play').textContent='播放';}
+function drawLaunch(){const mode=$('launch-mode').value,los=mode==='LOS';svg('launch-svg',240,w=>{const l=39,r=w-8,span=r-l,x=t=>l+span*t,a=x(.60),c=x(.84),change=x(los?.68:.51);let clk=`M${l} 160`;[.10,.24,.38,.60,.84].forEach(p=>{clk+=` H${x(p)} V133 H${x(p+.045)} V160`;});clk+=` H${r}`;const cursor=x([.13,.60,.70,.84,.97][launchStep]);return `<rect x="${l}" y="8" width="${change-l}" height="25" rx="4" fill="#e9efff"/><rect x="${change}" y="8" width="${r-change}" height="25" rx="4" fill="#e2f5ed"/>`+txt((l+change)/2,25,'扫描模式','middle')+txt((change+r)/2,25,'功能模式','middle')+txt(2,70,'SE')+`<path d="M${l} 64 H${change} V91 H${r}" fill="none" stroke="${colors.orange}" stroke-width="3"/>`+txt(2,153,'CLK')+`<path d="${clk}" fill="none" stroke="${colors.blue}" stroke-width="3"/>`+line(a,115,a,184,colors.orange,'4 4')+line(c,115,c,184,colors.orange,'4 4')+txt(a,107,'①','middle')+txt(c,107,'②','middle')+txt(a,201,w<420?'①发射':'Launch','middle')+txt(c,201,w<420?'②捕获':'Capture','middle')+line(a,213,c,213,colors.green)+txt((a+c)/2,234,'一个功能周期','middle')+line(cursor,41,cursor,174,colors.green);});const texts=['扫描装入 V1。',los?'最后一个 Shift 沿：SE=1，移位产生 Launch。':'第一个功能沿：SE=0，功能更新产生 Launch。',los?'SE 由1→0，必须及时切换并满足捕获条件。':'SE 保持0，功能逻辑的响应在路径上传播。','Capture 沿：采样响应，检查是否按时到达。','该组测试完成，随后可移出响应。'];$('launch-status').textContent=`${mode} · ${launchStep+1}/5 · ${texts[launchStep]}`;}
+$('launch-mode').onchange=()=>{stopLaunch();launchStep=0;drawLaunch();};$('launch-reset').onclick=()=>{stopLaunch();launchStep=0;drawLaunch();};$('launch-step').onclick=()=>{stopLaunch();launchStep=(launchStep+1)%5;drawLaunch();};$('launch-play').onclick=()=>{if(launchTimer){stopLaunch();return;}if(launchStep===4)launchStep=0;if(reduced){launchStep=Math.min(4,launchStep+1);drawLaunch();return;}$('launch-play').textContent='暂停';launchTimer=setInterval(()=>{launchStep++;drawLaunch();if(launchStep===4)stopLaunch();},1100);};
+function calcTime(){const v=['time-f','time-m','time-p','time-freq'].map(id=>Number($(id).value)),[f,m,p,freq]=v;const ok=v.every(n=>Number.isFinite(n)&&n>0)&&[f,m,p].every(Number.isSafeInteger)&&m<=f;$('time-status').textContent=ok?`最长链 L=${Math.ceil(f/m)}；Shift 周期=${((p+1)*Math.ceil(f/m)).toLocaleString()}；Shift 时间=${((p+1)*Math.ceil(f/m)/(freq*1000)).toFixed(3)} ms（未含 Capture 与控制开销）。`:'请输入正整数 FF/链/Pattern 数，链数不得大于 FF 数；频率须为正数。';$('time-status').setAttribute('role',ok?'status':'alert');}
+['time-f','time-m','time-p','time-freq'].forEach(id=>$(id).oninput=calcTime);
+const issues={reset:'先确认复位源与极性；扫描期间复位须处于正确非有效状态。检查测试控制、释放方式以及受影响寄存器，保留必要功能复位。',clock:'沿时钟传播路径检查门控 test-enable、MUX 选择、OCC 与测试时钟定义，确认问题单元确实收到有效脉冲。',x:'从最早出现的 X 追查未初始化状态、memory/黑盒模型、未约束输入与驱动冲突；再评估 X-bounding 或 masking 对覆盖率的影响。',chain:'检查 SI/SO 顺序和连通性、SE、复位、时钟边沿、跨域偏斜与 Lockup。用逐沿移位波形区分结构错误和时序问题。'};
+function issue(){ $('issue-status').textContent=issues[$('issue').value]; }$('issue').onchange=issue;
+function calcCoverage(){const [fu,dt,pd,ut,credit]=['cov-fu','cov-dt','cov-pd','cov-ut','cov-credit'].map(id=>Number($(id).value));const ok=[fu,dt,pd,ut].every(Number.isSafeInteger)&&fu>0&&[dt,pd,ut].every(n=>n>=0)&&ut<fu&&dt+pd<=fu-ut&&Number.isFinite(credit)&&credit>=0&&credit<=100;const eff=dt+pd*credit/100;$('cov-status').textContent=ok?`DT_eff=${eff}；Fault coverage=${(eff/fu*100).toFixed(2)}%；Test coverage=${(eff/(fu-ut)*100).toFixed(2)}%；剩余 AU+UD=${fu-ut-dt-pd}。`:'检查分类：计数须为非负整数，FU>UT，DT+PD≤FU−UT，credit 在0–100%之间。';$('cov-status').setAttribute('role',ok?'status':'alert');}
+['cov-fu','cov-dt','cov-pd','cov-ut','cov-credit'].forEach(id=>$(id).oninput=calcCoverage);
+const marchPhases=[['M0',[0,1,2,3],['w0']],['M1',[0,1,2,3],['r0','w1']],['M2',[0,1,2,3],['r1','w0']],['M3',[3,2,1,0],['r0','w1']],['M4',[3,2,1,0],['r1','w0']],['M5',[0,1,2,3],['r0']]];
+const marchOps=marchPhases.flatMap(([phase,addresses,ops])=>addresses.flatMap(addr=>ops.map(op=>({phase,addr,op}))));let marchStep=0,marchTimer=null;
+function stopMarch(){clearInterval(marchTimer);marchTimer=null;$('march-play').textContent='播放';}
+function replayMarch(){const mem=[null,null,null,null],fails=[],fault=$('march-fault').value;let last=null;for(let i=0;i<marchStep;i++){const s=marchOps[i],v=Number(s.op[1]);if(s.op[0]==='w'){const before=mem[s.addr];mem[s.addr]=(fault==='sa0'&&s.addr===1)?0:(fault==='rise'&&s.addr===1&&before===0&&v===1)?0:v;if(fault==='couple'&&s.addr===0&&v===1&&mem[1]!==null)mem[1]=1-mem[1];last={...s,actual:mem[s.addr],wanted:v,failed:false};}else{last={...s,actual:mem[s.addr],wanted:v,failed:mem[s.addr]!==v};if(last.failed)fails.push({step:i+1,...last});}}return {mem,fails,last};}
+function drawMarch(){const {mem,fails,last}=replayMarch(),next=marchOps[marchStep];svg('march-svg',153,w=>{const gap=7,cell=(w-3*gap)/4;let content='';mem.forEach((v,i)=>{const active=(last?last.addr:next?.addr)===i;content+=box(i*(cell+gap),25,cell,67,active?(last?.failed?'#fae8e5':'#e9efff'):'#fff',active?colors.blue:colors.muted)+txt(i*(cell+gap)+cell/2,46,`Addr ${i}`,'middle')+txt(i*(cell+gap)+cell/2,73,v===null?'—':v,'middle');});return content+txt(w/2,119,`${marchStep}/40 · ${marchStep===40?(fails.length?'FAIL':'PASS'):'运行进度'} · 已记录 ${fails.length} 次读失败`,'middle')+txt(w/2,144,last?`${last.phase} · ${last.op} @ Addr ${last.addr}`:'下一操作 M0 · w0 @ Addr 0','middle');});const observed=last?(last.op[0]==='r'?`读取 Addr${last.addr}，期望${last.wanted}，实际${last.actual} → ${last.failed?'FAIL':'PASS'}`:`写 Addr${last.addr}=${last.wanted}，存储值=${last.actual}`):'尚未初始化。';const first=fails.length?`首个失败：第${fails[0].step}步 ${fails[0].phase}，Addr${fails[0].addr}。`:'';$('march-status').textContent=observed+'；'+(next?`下一步 ${next.phase} ${next.op} @ Addr${next.addr}`:`完成，最终状态 ${mem.join('')}。`)+first;$('march-progress').style.width=`${marchStep/40*100}%`;}
+$('march-next').onclick=()=>{stopMarch();marchStep=Math.min(40,marchStep+1);drawMarch();};$('march-prev').onclick=()=>{stopMarch();marchStep=Math.max(0,marchStep-1);drawMarch();};$('march-reset').onclick=()=>{stopMarch();marchStep=0;drawMarch();};$('march-fault').onchange=$('march-reset').onclick;
+$('march-play').onclick=()=>{if(marchTimer){stopMarch();return;}if(marchStep===40)marchStep=0;if(reduced){marchStep++;drawMarch();return;}$('march-play').textContent='暂停';marchTimer=setInterval(()=>{marchStep++;drawMarch();if(marchStep===40)stopMarch();},420);};
+document.querySelectorAll('[data-code]').forEach(el=>el.textContent=labFiles[el.dataset.code]);
+document.querySelectorAll('[data-download]').forEach(button=>button.onclick=()=>{const name=button.dataset.download,a=document.createElement('a'),url=URL.createObjectURL(new Blob([labFiles[name]],{type:'text/plain;charset=utf-8'}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+const redraws=[drawRTL,drawFF,drawShift,()=>drawTwo('当前状态'),drawFault,drawLaunch,drawMarch];const observer=new ResizeObserver(()=>redraws.forEach(fn=>fn()));observer.observe(document.querySelector('main'));
+drawRTL();drawFF();drawShift();drawTwo();drawFault();drawLaunch();calcTime();issue();calcCoverage();drawMarch();
+const lessons=[...document.querySelectorAll('.lesson')],nav=[...document.querySelectorAll('.rail nav a')];
+const sections=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){const index=lessons.indexOf(e.target);nav.forEach(a=>{const active=a.hash===`#${e.target.id}`;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});$('read-count').textContent=`阅读位置 ${index+1} / ${lessons.length}`;$('read-progress').style.width=`${(index+1)/lessons.length*100}%`;}},{rootMargin:'-10% 0px -65% 0px'});lessons.forEach(s=>sections.observe(s));
+document.addEventListener('visibilitychange',()=>{if(document.hidden){stopShift();stopLaunch();stopMarch();}});
+</script></body></html>
